@@ -1,65 +1,139 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useCallback } from "react";
+import StartScreen from "@/components/StartScreen";
+import GameScreen from "@/components/GameScreen";
+import {
+  Difficulty,
+  Flag,
+  getDifficultySequence,
+  getFlagsByDifficulty,
+  generateCountryOptions,
+  generateCapitalOptions,
+} from "@/lib/gameLogic";
+
+type Phase = "start" | "playing";
+type AnswerState = "idle" | "both-correct" | "wrong";
+
+const TIER_LABELS: Record<Difficulty, string> = { 1: "Easy", 2: "Medium", 3: "Hard" };
+
+interface GameState {
+  sequence: Difficulty[];
+  seqIndex: number;
+  bucket: Flag[];
+  currentFlag: Flag;
+  countryOptions: Flag[];
+  capitalOptions: Flag[];
+}
+
+function buildInitialGameState(startDifficulty: Difficulty): GameState {
+  const sequence = getDifficultySequence(startDifficulty);
+  const bucket = getFlagsByDifficulty(sequence[0]);
+  const current = bucket[0];
+  return {
+    sequence,
+    seqIndex: 0,
+    bucket: bucket.slice(1),
+    currentFlag: current,
+    countryOptions: generateCountryOptions(current),
+    capitalOptions: generateCapitalOptions(current),
+  };
+}
+
+function nextQuestion(state: GameState): GameState {
+  if (state.bucket.length === 0) {
+    const nextSeqIndex = (state.seqIndex + 1) % state.sequence.length;
+    const nextDifficulty = state.sequence[nextSeqIndex];
+    const newBucket = getFlagsByDifficulty(nextDifficulty);
+    const current = newBucket[0];
+    return {
+      ...state,
+      seqIndex: nextSeqIndex,
+      bucket: newBucket.slice(1),
+      currentFlag: current,
+      countryOptions: generateCountryOptions(current),
+      capitalOptions: generateCapitalOptions(current),
+    };
+  }
+  const current = state.bucket[0];
+  return {
+    ...state,
+    bucket: state.bucket.slice(1),
+    currentFlag: current,
+    countryOptions: generateCountryOptions(current),
+    capitalOptions: generateCapitalOptions(current),
+  };
+}
 
 export default function Home() {
+  const [phase, setPhase] = useState<Phase>("start");
+  const [gameState, setGameState] = useState<GameState | null>(null);
+  const [answerState, setAnswerState] = useState<AnswerState>("idle");
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCapital, setSelectedCapital] = useState<string | null>(null);
+  const [streak, setStreak] = useState(0);
+
+  const handleStart = useCallback((difficulty: Difficulty) => {
+    setGameState(buildInitialGameState(difficulty));
+    setPhase("playing");
+    setAnswerState("idle");
+    setSelectedCountry(null);
+    setSelectedCapital(null);
+    setStreak(0);
+  }, []);
+
+  const resolveAnswer = useCallback(
+    (countryCode: string | null, capitalCode: string | null, flag: Flag) => {
+      if (!countryCode || !capitalCode) return; // wait for both selections
+      const bothCorrect = countryCode === flag.code && capitalCode === flag.code;
+      setAnswerState(bothCorrect ? "both-correct" : "wrong");
+      setStreak((s) => (bothCorrect ? s + 1 : 0));
+    },
+    []
+  );
+
+  const handleSelectCountry = useCallback(
+    (code: string) => {
+      if (!gameState || answerState !== "idle") return;
+      setSelectedCountry(code);
+      resolveAnswer(code, selectedCapital, gameState.currentFlag);
+    },
+    [gameState, answerState, selectedCapital, resolveAnswer]
+  );
+
+  const handleSelectCapital = useCallback(
+    (code: string) => {
+      if (!gameState || answerState !== "idle") return;
+      setSelectedCapital(code);
+      resolveAnswer(selectedCountry, code, gameState.currentFlag);
+    },
+    [gameState, answerState, selectedCountry, resolveAnswer]
+  );
+
+  const handleNext = useCallback(() => {
+    if (!gameState) return;
+    setGameState(nextQuestion(gameState));
+    setAnswerState("idle");
+    setSelectedCountry(null);
+    setSelectedCapital(null);
+  }, [gameState]);
+
+  if (phase === "start") return <StartScreen onStart={handleStart} />;
+  if (!gameState) return null;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <GameScreen
+      flag={gameState.currentFlag}
+      countryOptions={gameState.countryOptions}
+      capitalOptions={gameState.capitalOptions}
+      streak={streak}
+      tier={TIER_LABELS[gameState.sequence[gameState.seqIndex]]}
+      answerState={answerState}
+      selectedCountry={selectedCountry}
+      selectedCapital={selectedCapital}
+      onSelectCountry={handleSelectCountry}
+      onSelectCapital={handleSelectCapital}
+      onNext={handleNext}
+    />
   );
 }
