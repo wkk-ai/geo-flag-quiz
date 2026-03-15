@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import StartScreen from "@/components/StartScreen";
+import StartScreen, { GameMode } from "@/components/StartScreen";
 import GameScreen from "@/components/GameScreen";
+import MapScreen from "@/components/MapScreen";
 import {
   Difficulty,
   Flag,
@@ -18,6 +19,7 @@ type AnswerState = "idle" | "both-correct" | "wrong";
 const TIER_LABELS: Record<Difficulty, string> = { 1: "Easy", 2: "Medium", 3: "Hard" };
 
 interface GameState {
+  gameMode: GameMode;
   sequence: Difficulty[];
   seqIndex: number;
   bucket: Flag[];
@@ -26,11 +28,12 @@ interface GameState {
   capitalOptions: Flag[];
 }
 
-function buildInitialGameState(startDifficulty: Difficulty): GameState {
+function buildInitialGameState(mode: GameMode, startDifficulty: Difficulty): GameState {
   const sequence = getDifficultySequence(startDifficulty);
   const bucket = getFlagsByDifficulty(sequence[0]);
   const current = bucket[0];
   return {
+    gameMode: mode,
     sequence,
     seqIndex: 0,
     bucket: bucket.slice(1),
@@ -73,8 +76,8 @@ export default function Home() {
   const [selectedCapital, setSelectedCapital] = useState<string | null>(null);
   const [streak, setStreak] = useState(0);
 
-  const handleStart = useCallback((difficulty: Difficulty) => {
-    setGameState(buildInitialGameState(difficulty));
+  const handleStart = useCallback((mode: GameMode, difficulty: Difficulty) => {
+    setGameState(buildInitialGameState(mode, difficulty));
     setPhase("playing");
     setAnswerState("idle");
     setSelectedCountry(null);
@@ -84,8 +87,13 @@ export default function Home() {
 
   const resolveAnswer = useCallback(
     (countryCode: string | null, capitalCode: string | null, flag: Flag) => {
-      if (!countryCode || !capitalCode) return; // wait for both selections
-      const bothCorrect = countryCode === flag.code && capitalCode === flag.code;
+      if (!countryCode) return; // wait for country
+      
+      // For Flag Quiz, wait for both. For Map Quiz, resolve immediately on country select?
+      // User said: "regardless of getting it right or wrong, the capital names of all options should appear"
+      // This implies Map Quiz should reveal capitals on country selection.
+      
+      const bothCorrect = countryCode === flag.code && (!capitalCode || capitalCode === flag.code);
       setAnswerState(bothCorrect ? "both-correct" : "wrong");
       setStreak((s) => (bothCorrect ? s + 1 : 0));
     },
@@ -96,14 +104,23 @@ export default function Home() {
     (code: string) => {
       if (!gameState || answerState !== "idle") return;
       setSelectedCountry(code);
-      resolveAnswer(code, selectedCapital, gameState.currentFlag);
+      
+      if (gameState.gameMode === "map") {
+        // Resolve immediately in map mode
+        const isCorrect = code === gameState.currentFlag.code;
+        setAnswerState(isCorrect ? "both-correct" : "wrong");
+        setStreak((s) => (isCorrect ? s + 1 : 0));
+      } else {
+        // Flag mode: wait for both
+        resolveAnswer(code, selectedCapital, gameState.currentFlag);
+      }
     },
     [gameState, answerState, selectedCapital, resolveAnswer]
   );
 
   const handleSelectCapital = useCallback(
     (code: string) => {
-      if (!gameState || answerState !== "idle") return;
+      if (!gameState || answerState !== "idle" || gameState.gameMode === "map") return;
       setSelectedCapital(code);
       resolveAnswer(selectedCountry, code, gameState.currentFlag);
     },
@@ -120,6 +137,21 @@ export default function Home() {
 
   if (phase === "start") return <StartScreen onStart={handleStart} />;
   if (!gameState) return null;
+
+  if (gameState.gameMode === "map") {
+    return (
+      <MapScreen
+        country={gameState.currentFlag}
+        countryOptions={gameState.countryOptions}
+        streak={streak}
+        tier={TIER_LABELS[gameState.sequence[gameState.seqIndex]]}
+        answerState={answerState}
+        selectedCountry={selectedCountry}
+        onSelectCountry={handleSelectCountry}
+        onNext={handleNext}
+      />
+    );
+  }
 
   return (
     <GameScreen
