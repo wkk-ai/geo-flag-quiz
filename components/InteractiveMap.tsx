@@ -50,16 +50,19 @@ export function MainMap({
   };
 
   return (
-    <div className="relative w-full aspect-[3/2] bg-blue-50/10 rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-500">
+    <div className="relative w-full aspect-[2.4/1] bg-slate-950 rounded-[2rem] overflow-hidden border border-white/5 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] transition-all duration-500 ring-1 ring-white/10">
       <style jsx global>{`
         @keyframes map-pulse {
-          0% { transform: scale(1); opacity: 0.8; }
-          50% { transform: scale(1.5); opacity: 0.4; }
-          100% { transform: scale(1); opacity: 0.8; }
+          0% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 2px #3b82f6); }
+          50% { transform: scale(1.5); opacity: 0.4; filter: drop-shadow(0 0 8px #3b82f6); }
+          100% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 2px #3b82f6); }
         }
         .pulse-marker {
           animation: map-pulse 2s infinite ease-in-out;
           transform-origin: center;
+        }
+        .target-glow {
+          filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
         }
       `}</style>
 
@@ -83,12 +86,13 @@ export function MainMap({
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={isTarget ? "#111827" : "#F8FAFC"}
-                    stroke={isTarget ? "#111827" : "#E2E8F0"}
-                    strokeWidth={0.3 / position.zoom}
+                    fill={isTarget ? "#3b82f6" : "#1e293b"}
+                    stroke={isTarget ? "#60a5fa" : "#334155"}
+                    strokeWidth={isTarget ? 0.8 / position.zoom : 0.4 / position.zoom}
+                    className={isTarget ? "target-glow" : ""}
                     style={{
-                      default: { outline: "none" },
-                      hover: { outline: "none" },
+                      default: { outline: "none", transition: "all 300ms" },
+                      hover: { outline: "none", fill: isTarget ? "#60a5fa" : "#334155" },
                       pressed: { outline: "none" },
                     }}
                   />
@@ -99,37 +103,37 @@ export function MainMap({
 
           {targetNumeric && isTiny && !isAnswered && (
             <g transform={`translate(${position.center[0]}, ${position.center[1]})`}>
-              <circle r={6 / position.zoom} fill="#EF4444" className="pulse-marker" />
-              <circle r={2 / position.zoom} fill="#EF4444" />
+              <circle r={8 / position.zoom} fill="#3b82f6" className="pulse-marker" />
+              <circle r={3 / position.zoom} fill="#3b82f6" />
             </g>
           )}
         </ZoomableGroup>
       </ComposableMap>
 
-      {/* Zoom Controls */}
-      <div className="absolute bottom-4 left-4 flex flex-col gap-2 z-10">
+      {/* Zoom Controls - Glassmorphism */}
+      <div className="absolute bottom-6 left-6 flex flex-col gap-3 z-10">
         <button 
           onClick={handleZoomIn}
-          className="w-11 h-11 bg-white shadow-lg border border-gray-100 rounded-xl flex items-center justify-center text-gray-900 hover:bg-gray-50 active:scale-95 transition-all font-bold text-2xl select-none"
+          className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-all font-bold text-2xl select-none"
         >
           +
         </button>
         <button 
           onClick={handleZoomOut}
-          className="w-11 h-11 bg-white shadow-lg border border-gray-100 rounded-xl flex items-center justify-center text-gray-900 hover:bg-gray-50 active:scale-95 transition-all font-bold text-2xl select-none"
+          className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-all font-bold text-2xl select-none"
         >
           −
         </button>
       </div>
 
       {!isAnswered && (
-        <div className="absolute top-4 left-4 flex flex-col gap-1.5 focus:pointer-events-none select-none">
-          <div className="bg-gray-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg uppercase tracking-widest w-fit shadow-lg shadow-black/10">
+        <div className="absolute top-6 left-6 flex flex-col gap-2 focus:pointer-events-none select-none">
+          <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 text-white text-[10px] font-black underline-offset-4 decoration-blue-500/50 underline px-3.5 py-2 rounded-xl uppercase tracking-[0.2em] w-fit shadow-2xl">
             Target Region
           </div>
           {isTiny && (
-            <div className="bg-red-500 text-white text-[9px] font-bold px-2.5 py-1.5 rounded-lg uppercase tracking-widest w-fit flex items-center gap-1.5 shadow-lg shadow-red-200/50 transition-all">
-              <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+            <div className="bg-blue-600/20 backdrop-blur-xl border border-blue-500/30 text-blue-400 text-[10px] font-black px-3.5 py-2 rounded-xl uppercase tracking-[0.2em] w-fit flex items-center gap-2 shadow-2xl transition-all">
+              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
               Small Location
             </div>
           )}
@@ -137,6 +141,7 @@ export function MainMap({
       )}
     </div>
   );
+
 }
 
 export function MiniMap({ 
@@ -151,9 +156,9 @@ export function MiniMap({
   const miniMapScale = isTiny ? 140 : 45;
 
   return (
-    <div className="w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-xl pointer-events-none relative transition-all duration-700 ease-in-out">
-      <div className="absolute top-3 left-3 bg-gray-50 px-2 py-1 rounded-md border border-gray-100/50 z-10">
-        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Context Map</span>
+    <div className="w-full aspect-[1.8/1] bg-slate-900 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl pointer-events-none relative transition-all duration-700 ease-in-out ring-1 ring-white/10">
+      <div className="absolute top-4 left-4 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 z-10">
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Context Map</span>
       </div>
       <ComposableMap
         projectionConfig={{ 
@@ -170,8 +175,8 @@ export function MiniMap({
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
-                fill="#F1F5F9"
-                stroke="#E2E8F0"
+                fill="#1e293b"
+                stroke="#334155"
                 strokeWidth={0.2}
               />
             ))
@@ -180,17 +185,18 @@ export function MiniMap({
         <rect
           x={150 + position.center[0] * (miniMapScale/100)} 
           y={112.5 - position.center[1] * (miniMapScale/100)}
-          width={Math.max(8, 40 / position.zoom)}
-          height={Math.max(8, 25 / position.zoom)}
-          fill="rgba(239, 68, 68, 0.08)"
-          stroke="#EF4444"
-          strokeWidth={0.8}
-          transform={`translate(${-Math.max(4, 20/position.zoom)}, ${-Math.max(4, 12.5/position.zoom)})`}
+          width={Math.max(10, 45 / position.zoom)}
+          height={Math.max(10, 30 / position.zoom)}
+          fill="rgba(59, 130, 246, 0.15)"
+          stroke="#3b82f6"
+          strokeWidth={1.2}
+          transform={`translate(${-Math.max(5, 22.5/position.zoom)}, ${-Math.max(5, 15/position.zoom)})`}
           className="transition-all duration-500"
         />
       </ComposableMap>
     </div>
   );
+
 }
 
 export default function InteractiveMap({ targetCode, isAnswered, fallbackLatLng }: Props) {

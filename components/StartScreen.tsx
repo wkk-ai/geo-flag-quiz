@@ -35,34 +35,39 @@ export default function StartScreen({ onStart }: Props) {
 
   if (!selectedMode) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white">
+      <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-950 text-slate-100">
         <div className="w-full max-w-md text-center">
-          <div className="text-5xl mb-3">🌍</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">Geo Quiz</h1>
-          <p className="text-gray-500 text-sm mb-10">Test your geography knowledge</p>
+          <div className="relative mb-8 group">
+            <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full group-hover:bg-blue-500/30 transition-all duration-1000"></div>
+            <div className="text-7xl mb-4 relative drop-shadow-2xl animate-float">🌍</div>
+            <h1 className="text-5xl font-black text-white mb-2 tracking-tighter bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">Geo Quiz</h1>
+            <p className="text-slate-400 text-sm font-medium tracking-[0.2em] uppercase opacity-70">Master the Planet</p>
+          </div>
 
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-            Select Game Mode
-          </p>
+          <div className="relative px-6 py-8 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 mb-8">
+              Select Expedition Mode
+            </p>
 
-          <div className="flex flex-col gap-3">
-            {modes.map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => setSelectedMode(mode.id)}
-                className="w-full text-left px-5 py-4 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all group"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-2xl">{mode.icon}</span>
-                  <div>
-                    <span className="block font-semibold text-gray-900">
-                      {mode.label}
-                    </span>
-                    <span className="block text-sm text-gray-400 mt-0.5">{mode.desc}</span>
+            <div className="flex flex-col gap-4">
+              {modes.map((mode) => (
+                <button
+                  key={mode.id}
+                  onClick={() => setSelectedMode(mode.id)}
+                  className="w-full text-left px-6 py-5 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 hover:scale-[1.02] transition-all group active:scale-95 shadow-lg"
+                >
+                  <div className="flex items-center gap-5">
+                    <span className="text-3xl group-hover:scale-110 transition-transform">{mode.icon}</span>
+                    <div>
+                      <span className="block font-black text-white text-lg tracking-tight group-hover:text-blue-400 transition-colors">
+                        {mode.label}
+                      </span>
+                      <span className="block text-xs text-slate-400 font-medium mt-1 leading-relaxed">{mode.desc}</span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -70,37 +75,39 @@ export default function StartScreen({ onStart }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-950 text-slate-100">
       <div className="w-full max-w-md text-center">
-        <div className="text-5xl mb-3">{selectedMode === "flag" ? "🚩" : "🗺️"}</div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">
-          {selectedMode === "flag" ? "Flag Quiz" : "Map Quiz"}
-        </h1>
-        <p className="text-gray-500 text-sm mb-10">Select your challenge level</p>
+        <div className="relative mb-8 pt-4">
+          <div className="text-7xl mb-4 drop-shadow-2xl">{selectedMode === "flag" ? "🚩" : "🗺️"}</div>
+          <h1 className="text-4xl font-black text-white mb-2 tracking-tight">
+            {selectedMode === "flag" ? "Flag Explorer" : "Map Scout"}
+          </h1>
+          <p className="text-slate-400 text-xs font-black uppercase tracking-[0.2em]">Tier Selection</p>
+        </div>
 
-        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-          Select Difficulty
-        </p>
-
-        <div className="flex flex-col gap-3">
-          {difficulties.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() => onStart(selectedMode, opt.value)}
-              className="w-full text-left px-5 py-4 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all group"
+        <div className="relative px-6 py-8 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
+          <div className="flex flex-col gap-4">
+            {difficulties.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => onStart(selectedMode, opt.value)}
+                className="w-full text-left px-6 py-5 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 hover:scale-[1.02] transition-all group active:scale-95 shadow-lg"
+              >
+                <span className="block font-black text-white text-lg tracking-tight group-hover:text-blue-400 transition-colors">
+                  {opt.label}
+                </span>
+                <span className="block text-xs text-slate-400 font-medium mt-1 leading-relaxed">{opt.desc}</span>
+              </button>
+            ))}
+            
+            <button 
+              onClick={() => setSelectedMode(null)}
+              className="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-colors flex items-center justify-center gap-2 group"
             >
-              <span className="block font-semibold text-gray-900 group-hover:text-gray-900">
-                {opt.label}
-              </span>
-              <span className="block text-sm text-gray-400 mt-0.5">{opt.desc}</span>
+              <span className="group-hover:-translate-x-1 transition-transform">←</span>
+              Adjust Approach
             </button>
-          ))}
-          <button 
-            onClick={() => setSelectedMode(null)}
-            className="mt-4 text-xs font-medium text-gray-400 hover:text-gray-900 underline underline-offset-4"
-          >
-            ← Back to modes
-          </button>
+          </div>
         </div>
       </div>
     </div>

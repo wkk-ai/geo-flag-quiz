@@ -27,15 +27,15 @@ function optionClass(
   answerState: AnswerState,
   disabled: boolean
 ): string {
-  const base = "w-full text-left px-3 py-2.5 border rounded-xl text-sm font-medium transition-all";
+  const base = "w-full text-left px-4 py-3.5 border rounded-2xl text-[13px] font-black transition-all duration-300 shadow-sm ";
   if (answerState === "idle") {
-    if (selected === code) return `${base} border-gray-900 bg-gray-50 text-gray-900`;
-    if (disabled) return `${base} border-gray-100 text-gray-300 cursor-default`;
-    return `${base} border-gray-200 text-gray-800 hover:border-gray-900 hover:bg-gray-50`;
+    if (selected === code) return `${base} bg-blue-600 border-blue-400 text-white shadow-blue-500/20 scale-[1.05] ring-2 ring-blue-500/50`;
+    if (disabled) return `${base} border-white/5 bg-white/[0.01] text-slate-600 cursor-default opacity-50`;
+    return `${base} border-white/10 bg-white/[0.03] backdrop-blur-md text-slate-400 hover:border-white/20 hover:text-white hover:bg-white/[0.06] active:scale-[0.98]`;
   }
-  if (code === correctCode) return `${base} border-green-500 bg-green-50 text-green-800`;
-  if (code === selected && selected !== correctCode) return `${base} border-red-400 bg-red-50 text-red-700`;
-  return `${base} border-gray-100 text-gray-300`;
+  if (code === correctCode) return `${base} bg-emerald-500 border-emerald-400 text-white shadow-emerald-500/20 scale-[1.05] z-10 ring-4 ring-emerald-500/20`;
+  if (code === selected && selected !== correctCode) return `${base} bg-rose-500 border-rose-400 text-white shadow-rose-500/20 scale-[0.98] ring-4 ring-rose-500/20`;
+  return `${base} border-white/5 bg-white/[0.01] text-slate-700 opacity-40 blur-[1px]`;
 }
 
 export default function GameScreen({
@@ -57,51 +57,45 @@ export default function GameScreen({
   const countryLocked = isAnswered;
   const capitalLocked = isAnswered;
 
-  const flagBorderColor =
-    answerState === "both-correct"
-      ? "border-green-400"
-      : answerState === "wrong"
-      ? "border-red-400"
-      : "border-gray-100";
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white py-6">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-950 text-slate-100 py-8 selection:bg-blue-500/30">
       <div className="w-full max-w-lg space-y-4">
-        {/* Header - Permanently shrunk */}
-        <div className="grid grid-cols-3 items-center transition-all duration-500 opacity-70 scale-95">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-left">{tier} Mode</span>
+        {/* Header - Premium Navigation */}
+        <div className="grid grid-cols-3 items-center px-4 mb-2">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 text-left">{tier} Mode</span>
           
           <button 
             onClick={onHome}
-            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-100 hover:border-gray-900 hover:bg-gray-50 transition-all group mx-auto"
+            className="flex items-center justify-center gap-2 px-5 py-2 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all group mx-auto active:scale-95"
           >
-            <span className="text-sm">🏠</span>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-gray-900">Home</span>
+            <span className="text-base group-hover:scale-110 transition-transform">🏠</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white">Exit</span>
           </button>
-
-          <div className="flex items-center justify-end gap-1.5">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Streak</span>
-            <span className="text-sm font-black text-gray-900">{streak}</span>
+          
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Streak</span>
+            <span className="text-lg font-black text-white tabular-nums tracking-tighter">{streak}</span>
           </div>
         </div>
 
-        {/* Flag - Permanently shrunk and compact */}
-        <div className={`relative w-full rounded-xl overflow-hidden border-2 transition-all duration-500 ease-in-out bg-gray-50 aspect-[2.2/1] scale-95 shadow-sm ${flagBorderColor}`}
+        {/* Flag - Premium Display */}
+        <div className={`relative w-full rounded-3xl overflow-hidden border transition-all duration-700 ease-in-out bg-white/[0.02] aspect-[2/1] shadow-2xl ring-1 ring-white/5 ${answerState === "both-correct" ? "border-emerald-500 shadow-emerald-500/10" : answerState === "wrong" ? "border-rose-500 shadow-rose-500/10" : "border-white/10"}`}
         >
+          <div className="absolute inset-0 bg-blue-500/5 blur-[80px]"></div>
           <Image
             src={`https://flagcdn.com/w640/${flag.code}.png`}
             alt="Country flag"
             fill
-            className="object-contain p-2"
+            className="object-contain p-6 relative z-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             sizes="(max-width: 768px) 100vw, 512px"
             priority
           />
         </div>
 
         {/* Column headers - Compact */}
-        <div className="grid grid-cols-2 gap-3 -mb-1">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-center">Country</p>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-center">Capital</p>
+        <div className="grid grid-cols-2 gap-4 px-2 pt-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 text-center">Country</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 text-center">Capital</p>
         </div>
 
         {/* Two-column options - 4 alternatives */}
@@ -115,7 +109,7 @@ export default function GameScreen({
                 disabled={countryLocked}
                 className={optionClass(opt.code, flag.code, selectedCountry, answerState, countryLocked)}
               >
-                <span className="text-xs font-bold leading-tight truncate w-full text-center">{opt.name}</span>
+                <span className="text-xs font-black leading-tight truncate w-full text-center">{opt.name}</span>
               </button>
             ))}
           </div>
@@ -129,7 +123,7 @@ export default function GameScreen({
                 disabled={capitalLocked}
                 className={optionClass(opt.code, flag.code, selectedCapital, answerState, capitalLocked)}
               >
-                <span className="text-xs font-bold leading-tight truncate w-full text-center">{opt.capital}</span>
+                <span className="text-xs font-black leading-tight truncate w-full text-center">{opt.capital}</span>
                 {isAnswered && (
                   <span className="block text-[8px] font-black uppercase tracking-tighter mt-0.5 opacity-50 truncate w-full text-center">{opt.name}</span>
                 )}
@@ -140,21 +134,28 @@ export default function GameScreen({
 
         {/* Feedback + Next Section */}
         {isAnswered ? (
-          <div className="flex flex-col items-center gap-3 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <p className={`text-xs font-black uppercase tracking-widest ${answerState === "both-correct" ? "text-green-600" : "text-red-500"}`}>
-              {answerState === "both-correct"
-                ? "Both correct! 🎉"
-                : `Wrong — ${flag.name}, capital: ${flag.capital}`}
-            </p>
+          <div className="flex flex-col items-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="flex flex-col items-center gap-1">
+              <p className={`text-[10px] font-black uppercase tracking-[0.3em] ${answerState === "both-correct" ? "text-emerald-400" : "text-rose-400"}`}>
+                {answerState === "both-correct" ? "Perfect Match!" : "Discovery Insight"}
+              </p>
+              {answerState === "wrong" && (
+                <p className="text-white font-black text-xl tracking-tight text-center">
+                  That was {flag.name}, {flag.capital}
+                </p>
+              )}
+            </div>
+            
             <button
               onClick={onNext}
-              className="w-full max-w-xs py-3.5 bg-gray-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-gray-800 transition-all active:scale-95 shadow-xl shadow-gray-200"
+              className="w-full max-w-sm py-4 bg-blue-600 text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] transition-all active:scale-95 shadow-2xl flex items-center justify-center gap-2 group"
             >
-              Next Flag →
+              Continue Expedition
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
           </div>
         ) : (
-          <div className="h-20" /> /* Reserved space for feedback/nav */
+          <div className="h-24" />
         )}
       </div>
     </div>
