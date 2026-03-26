@@ -17,6 +17,7 @@ interface Props {
   onSelectCountry: (code: string) => void;
   onSelectCapital: (code: string) => void;
   onNext: () => void;
+  onHome: () => void;
 }
 
 function optionClass(
@@ -49,6 +50,7 @@ export default function GameScreen({
   onSelectCountry,
   onSelectCapital,
   onNext,
+  onHome,
 }: Props) {
   const isAnswered = answerState !== "idle";
   // Country column is locked once user picks a country AND capital, or if answered
@@ -63,40 +65,47 @@ export default function GameScreen({
       : "border-gray-100";
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white">
-      <div className="w-full max-w-lg">
-        {/* Header */}
-        <div className={`flex items-center justify-between transition-all duration-500 ${isAnswered ? "mb-2 opacity-60 scale-95" : "mb-6"}`}>
-          <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{tier}</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-400">Streak</span>
-            <span className="text-sm font-bold text-gray-800">{streak}</span>
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white py-6">
+      <div className="w-full max-w-lg space-y-4">
+        {/* Header - Permanently shrunk */}
+        <div className="grid grid-cols-3 items-center transition-all duration-500 opacity-70 scale-95">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-left">{tier} Mode</span>
+          
+          <button 
+            onClick={onHome}
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-100 hover:border-gray-900 hover:bg-gray-50 transition-all group mx-auto"
+          >
+            <span className="text-sm">🏠</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-gray-900">Home</span>
+          </button>
+
+          <div className="flex items-center justify-end gap-1.5">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Streak</span>
+            <span className="text-sm font-black text-gray-900">{streak}</span>
           </div>
         </div>
 
-        {/* Flag - Shrinks when answered to save space */}
-        <div className={`relative w-full rounded-xl overflow-hidden border-2 transition-all duration-500 ease-in-out bg-gray-50 
-          ${isAnswered ? "aspect-[2/1] mb-3 scale-90" : "aspect-[3/2] mb-5"} 
-          ${flagBorderColor}`}
+        {/* Flag - Permanently shrunk and compact */}
+        <div className={`relative w-full rounded-xl overflow-hidden border-2 transition-all duration-500 ease-in-out bg-gray-50 aspect-[2.2/1] scale-95 shadow-sm ${flagBorderColor}`}
         >
           <Image
             src={`https://flagcdn.com/w640/${flag.code}.png`}
             alt="Country flag"
             fill
-            className="object-contain"
+            className="object-contain p-2"
             sizes="(max-width: 768px) 100vw, 512px"
             priority
           />
         </div>
 
-        {/* Column headers */}
-        <div className="grid grid-cols-2 gap-3 mb-1.5">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 text-center">Country</p>
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 text-center">Capital</p>
+        {/* Column headers - Compact */}
+        <div className="grid grid-cols-2 gap-3 -mb-1">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-center">Country</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-center">Capital</p>
         </div>
 
-        {/* Two-column options */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Two-column options - 4 alternatives */}
+        <div className="grid grid-cols-2 gap-3 px-2">
           {/* Country options */}
           <div className="flex flex-col gap-2">
             {countryOptions.map((opt) => (
@@ -106,7 +115,7 @@ export default function GameScreen({
                 disabled={countryLocked}
                 className={optionClass(opt.code, flag.code, selectedCountry, answerState, countryLocked)}
               >
-                {opt.name}
+                <span className="text-xs font-bold leading-tight truncate w-full text-center">{opt.name}</span>
               </button>
             ))}
           </div>
@@ -120,35 +129,34 @@ export default function GameScreen({
                 disabled={capitalLocked}
                 className={optionClass(opt.code, flag.code, selectedCapital, answerState, capitalLocked)}
               >
-                <span>{opt.capital}</span>
+                <span className="text-xs font-bold leading-tight truncate w-full text-center">{opt.capital}</span>
                 {isAnswered && (
-                  <span className="block text-xs font-normal mt-0.5 opacity-60">{opt.name}</span>
+                  <span className="block text-[8px] font-black uppercase tracking-tighter mt-0.5 opacity-50 truncate w-full text-center">{opt.name}</span>
                 )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Spacer so fixed bar doesn't overlap last option */}
-        {isAnswered && <div className="h-32" />}
+        {/* Feedback + Next Section */}
+        {isAnswered ? (
+          <div className="flex flex-col items-center gap-3 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <p className={`text-xs font-black uppercase tracking-widest ${answerState === "both-correct" ? "text-green-600" : "text-red-500"}`}>
+              {answerState === "both-correct"
+                ? "Both correct! 🎉"
+                : `Wrong — ${flag.name}, capital: ${flag.capital}`}
+            </p>
+            <button
+              onClick={onNext}
+              className="w-full max-w-xs py-3.5 bg-gray-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-gray-800 transition-all active:scale-95 shadow-xl shadow-gray-200"
+            >
+              Next Flag →
+            </button>
+          </div>
+        ) : (
+          <div className="h-20" /> /* Reserved space for feedback/nav */
+        )}
       </div>
-
-      {/* Feedback + Next — fixed to bottom, always visible */}
-      {isAnswered && (
-        <div className="fixed bottom-0 left-0 right-0 flex flex-col items-center gap-3 px-6 py-5 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
-          <p className={`text-sm font-semibold ${answerState === "both-correct" ? "text-green-600" : "text-red-500"}`}>
-            {answerState === "both-correct"
-              ? "Both correct! 🎉"
-              : `Wrong — ${flag.name}, capital: ${flag.capital}`}
-          </p>
-          <button
-            onClick={onNext}
-            className="w-full max-w-xs py-3 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-all active:scale-95 shadow-lg shadow-gray-200"
-          >
-            Next →
-          </button>
-        </div>
-      )}
     </div>
   );
 }

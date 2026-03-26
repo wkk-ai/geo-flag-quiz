@@ -7,6 +7,7 @@ export interface Flag {
   code: string;
   capital: string;
   difficulty: Difficulty;
+  latlng?: [number, number];
 }
 
 const allFlags: Flag[] = flags as Flag[];
@@ -23,13 +24,13 @@ export function getFlagsByDifficulty(difficulty: Difficulty): Flag[] {
 
 /** Generate 5 country-name options (1 correct + 4 random). */
 export function generateCountryOptions(correct: Flag): Flag[] {
-  const distractors = shuffle(allFlags.filter((f) => f.code !== correct.code)).slice(0, 4);
+  const distractors = shuffle(allFlags.filter((f) => f.code !== correct.code)).slice(0, 3);
   return shuffle([correct, ...distractors]);
 }
 
 /** Generate 5 capital options (1 correct + 4 random). */
 export function generateCapitalOptions(correct: Flag): Flag[] {
-  const distractors = shuffle(allFlags.filter((f) => f.code !== correct.code)).slice(0, 4);
+  const distractors = shuffle(allFlags.filter((f) => f.code !== correct.code)).slice(0, 3);
   return shuffle([correct, ...distractors]);
 }
 

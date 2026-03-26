@@ -86,14 +86,13 @@ export default function Home() {
   }, []);
 
   const resolveAnswer = useCallback(
-    (countryCode: string | null, capitalCode: string | null, flag: Flag) => {
-      if (!countryCode) return; // wait for country
+    (countryCode: string | null, capitalCode: string | null, flag: Flag, mode: GameMode) => {
+      // For Flag Quiz, MUST have both selected. 
+      // For Map Quiz, handleSelectCountry handles it directly, but we keep this safe.
+      if (mode === "flag" && (!countryCode || !capitalCode)) return;
+      if (mode === "map" && !countryCode) return;
       
-      // For Flag Quiz, wait for both. For Map Quiz, resolve immediately on country select?
-      // User said: "regardless of getting it right or wrong, the capital names of all options should appear"
-      // This implies Map Quiz should reveal capitals on country selection.
-      
-      const bothCorrect = countryCode === flag.code && (!capitalCode || capitalCode === flag.code);
+      const bothCorrect = countryCode === flag.code && (mode === "map" || capitalCode === flag.code);
       setAnswerState(bothCorrect ? "both-correct" : "wrong");
       setStreak((s) => (bothCorrect ? s + 1 : 0));
     },
@@ -112,7 +111,7 @@ export default function Home() {
         setStreak((s) => (isCorrect ? s + 1 : 0));
       } else {
         // Flag mode: wait for both
-        resolveAnswer(code, selectedCapital, gameState.currentFlag);
+        resolveAnswer(code, selectedCapital, gameState.currentFlag, gameState.gameMode);
       }
     },
     [gameState, answerState, selectedCapital, resolveAnswer]
@@ -122,7 +121,7 @@ export default function Home() {
     (code: string) => {
       if (!gameState || answerState !== "idle" || gameState.gameMode === "map") return;
       setSelectedCapital(code);
-      resolveAnswer(selectedCountry, code, gameState.currentFlag);
+      resolveAnswer(selectedCountry, code, gameState.currentFlag, gameState.gameMode);
     },
     [gameState, answerState, selectedCountry, resolveAnswer]
   );
@@ -134,6 +133,13 @@ export default function Home() {
     setSelectedCountry(null);
     setSelectedCapital(null);
   }, [gameState]);
+
+  const handleGoHome = useCallback(() => {
+    setPhase("start");
+    setGameState(null);
+    setAnswerState("idle");
+    setStreak(0);
+  }, []);
 
   if (phase === "start") return <StartScreen onStart={handleStart} />;
   if (!gameState) return null;
@@ -149,6 +155,7 @@ export default function Home() {
         selectedCountry={selectedCountry}
         onSelectCountry={handleSelectCountry}
         onNext={handleNext}
+        onHome={handleGoHome}
       />
     );
   }
@@ -166,6 +173,7 @@ export default function Home() {
       onSelectCountry={handleSelectCountry}
       onSelectCapital={handleSelectCapital}
       onNext={handleNext}
+      onHome={handleGoHome}
     />
   );
 }

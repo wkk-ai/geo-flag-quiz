@@ -1,107 +1,2482 @@
 [
-  { "name": "Brazil", "code": "br", "capital": "Brasília", "difficulty": 1 },
-  { "name": "United States", "code": "us", "capital": "Washington D.C.", "difficulty": 1 },
-  { "name": "United Kingdom", "code": "gb", "capital": "London", "difficulty": 1 },
-  { "name": "France", "code": "fr", "capital": "Paris", "difficulty": 1 },
-  { "name": "Germany", "code": "de", "capital": "Berlin", "difficulty": 1 },
-  { "name": "Japan", "code": "jp", "capital": "Tokyo", "difficulty": 1 },
-  { "name": "China", "code": "cn", "capital": "Beijing", "difficulty": 1 },
-  { "name": "Canada", "code": "ca", "capital": "Ottawa", "difficulty": 1 },
-  { "name": "Australia", "code": "au", "capital": "Canberra", "difficulty": 1 },
-  { "name": "Italy", "code": "it", "capital": "Rome", "difficulty": 1 },
-  { "name": "Spain", "code": "es", "capital": "Madrid", "difficulty": 1 },
-  { "name": "Mexico", "code": "mx", "capital": "Mexico City", "difficulty": 1 },
-  { "name": "India", "code": "in", "capital": "New Delhi", "difficulty": 1 },
-  { "name": "Russia", "code": "ru", "capital": "Moscow", "difficulty": 1 },
-  { "name": "South Korea", "code": "kr", "capital": "Seoul", "difficulty": 1 },
-  { "name": "Argentina", "code": "ar", "capital": "Buenos Aires", "difficulty": 1 },
-  { "name": "Portugal", "code": "pt", "capital": "Lisbon", "difficulty": 1 },
-  { "name": "Turkey", "code": "tr", "capital": "Ankara", "difficulty": 1 },
-  { "name": "Egypt", "code": "eg", "capital": "Cairo", "difficulty": 1 },
-  { "name": "South Africa", "code": "za", "capital": "Pretoria", "difficulty": 1 },
-  { "name": "Nigeria", "code": "ng", "capital": "Abuja", "difficulty": 1 },
-  { "name": "Saudi Arabia", "code": "sa", "capital": "Riyadh", "difficulty": 1 },
-  { "name": "Iran", "code": "ir", "capital": "Tehran", "difficulty": 1 },
-  { "name": "Greece", "code": "gr", "capital": "Athens", "difficulty": 1 },
-  { "name": "Netherlands", "code": "nl", "capital": "Amsterdam", "difficulty": 1 },
-  { "name": "Sweden", "code": "se", "capital": "Stockholm", "difficulty": 1 },
-  { "name": "Norway", "code": "no", "capital": "Oslo", "difficulty": 1 },
-  { "name": "Switzerland", "code": "ch", "capital": "Bern", "difficulty": 1 },
-  { "name": "Poland", "code": "pl", "capital": "Warsaw", "difficulty": 1 },
-  { "name": "Thailand", "code": "th", "capital": "Bangkok", "difficulty": 1 },
-  { "name": "Indonesia", "code": "id", "capital": "Jakarta", "difficulty": 2 },
-  { "name": "Pakistan", "code": "pk", "capital": "Islamabad", "difficulty": 2 },
-  { "name": "Bangladesh", "code": "bd", "capital": "Dhaka", "difficulty": 2 },
-  { "name": "Ukraine", "code": "ua", "capital": "Kyiv", "difficulty": 2 },
-  { "name": "Vietnam", "code": "vn", "capital": "Hanoi", "difficulty": 2 },
-  { "name": "Philippines", "code": "ph", "capital": "Manila", "difficulty": 2 },
-  { "name": "Colombia", "code": "co", "capital": "Bogotá", "difficulty": 2 },
-  { "name": "Chile", "code": "cl", "capital": "Santiago", "difficulty": 2 },
-  { "name": "Peru", "code": "pe", "capital": "Lima", "difficulty": 2 },
-  { "name": "Venezuela", "code": "ve", "capital": "Caracas", "difficulty": 2 },
-  { "name": "Romania", "code": "ro", "capital": "Bucharest", "difficulty": 2 },
-  { "name": "Hungary", "code": "hu", "capital": "Budapest", "difficulty": 2 },
-  { "name": "Czech Republic", "code": "cz", "capital": "Prague", "difficulty": 2 },
-  { "name": "Belgium", "code": "be", "capital": "Brussels", "difficulty": 2 },
-  { "name": "Austria", "code": "at", "capital": "Vienna", "difficulty": 2 },
-  { "name": "Morocco", "code": "ma", "capital": "Rabat", "difficulty": 2 },
-  { "name": "Algeria", "code": "dz", "capital": "Algiers", "difficulty": 2 },
-  { "name": "Ethiopia", "code": "et", "capital": "Addis Ababa", "difficulty": 2 },
-  { "name": "Kenya", "code": "ke", "capital": "Nairobi", "difficulty": 2 },
-  { "name": "Ghana", "code": "gh", "capital": "Accra", "difficulty": 2 },
-  { "name": "Iraq", "code": "iq", "capital": "Baghdad", "difficulty": 2 },
-  { "name": "Israel", "code": "il", "capital": "Jerusalem", "difficulty": 2 },
-  { "name": "Jordan", "code": "jo", "capital": "Amman", "difficulty": 2 },
-  { "name": "Kuwait", "code": "kw", "capital": "Kuwait City", "difficulty": 2 },
-  { "name": "Malaysia", "code": "my", "capital": "Kuala Lumpur", "difficulty": 2 },
-  { "name": "Singapore", "code": "sg", "capital": "Singapore", "difficulty": 2 },
-  { "name": "New Zealand", "code": "nz", "capital": "Wellington", "difficulty": 2 },
-  { "name": "Denmark", "code": "dk", "capital": "Copenhagen", "difficulty": 2 },
-  { "name": "Finland", "code": "fi", "capital": "Helsinki", "difficulty": 2 },
-  { "name": "Slovakia", "code": "sk", "capital": "Bratislava", "difficulty": 2 },
-  { "name": "Tuvalu", "code": "tv", "capital": "Funafuti", "difficulty": 3 },
-  { "name": "Nauru", "code": "nr", "capital": "Yaren", "difficulty": 3 },
-  { "name": "Palau", "code": "pw", "capital": "Ngerulmud", "difficulty": 3 },
-  { "name": "Marshall Islands", "code": "mh", "capital": "Majuro", "difficulty": 3 },
-  { "name": "Kiribati", "code": "ki", "capital": "South Tarawa", "difficulty": 3 },
-  { "name": "Micronesia", "code": "fm", "capital": "Palikir", "difficulty": 3 },
-  { "name": "Tonga", "code": "to", "capital": "Nukuʻalofa", "difficulty": 3 },
-  { "name": "Vanuatu", "code": "vu", "capital": "Port Vila", "difficulty": 3 },
-  { "name": "Samoa", "code": "ws", "capital": "Apia", "difficulty": 3 },
-  { "name": "Solomon Islands", "code": "sb", "capital": "Honiara", "difficulty": 3 },
-  { "name": "São Tomé and Príncipe", "code": "st", "capital": "São Tomé", "difficulty": 3 },
-  { "name": "Comoros", "code": "km", "capital": "Moroni", "difficulty": 3 },
-  { "name": "Equatorial Guinea", "code": "gq", "capital": "Malabo", "difficulty": 3 },
-  { "name": "Djibouti", "code": "dj", "capital": "Djibouti City", "difficulty": 3 },
-  { "name": "Eritrea", "code": "er", "capital": "Asmara", "difficulty": 3 },
-  { "name": "Eswatini", "code": "sz", "capital": "Mbabane", "difficulty": 3 },
-  { "name": "Lesotho", "code": "ls", "capital": "Maseru", "difficulty": 3 },
-  { "name": "Malawi", "code": "mw", "capital": "Lilongwe", "difficulty": 3 },
-  { "name": "Burundi", "code": "bi", "capital": "Gitega", "difficulty": 3 },
-  { "name": "Central African Republic", "code": "cf", "capital": "Bangui", "difficulty": 3 },
-  { "name": "Guinea-Bissau", "code": "gw", "capital": "Bissau", "difficulty": 3 },
-  { "name": "Gambia", "code": "gm", "capital": "Banjul", "difficulty": 3 },
-  { "name": "Sierra Leone", "code": "sl", "capital": "Freetown", "difficulty": 3 },
-  { "name": "Liberia", "code": "lr", "capital": "Monrovia", "difficulty": 3 },
-  { "name": "Cabo Verde", "code": "cv", "capital": "Praia", "difficulty": 3 },
-  { "name": "Bhutan", "code": "bt", "capital": "Thimphu", "difficulty": 3 },
-  { "name": "Maldives", "code": "mv", "capital": "Malé", "difficulty": 3 },
-  { "name": "Timor-Leste", "code": "tl", "capital": "Dili", "difficulty": 3 },
-  { "name": "Brunei", "code": "bn", "capital": "Bandar Seri Begawan", "difficulty": 3 },
-  { "name": "Turkmenistan", "code": "tm", "capital": "Ashgabat", "difficulty": 3 },
-  { "name": "Tajikistan", "code": "tj", "capital": "Dushanbe", "difficulty": 3 },
-  { "name": "Kyrgyzstan", "code": "kg", "capital": "Bishkek", "difficulty": 3 },
-  { "name": "Uzbekistan", "code": "uz", "capital": "Tashkent", "difficulty": 3 },
-  { "name": "Mongolia", "code": "mn", "capital": "Ulaanbaatar", "difficulty": 3 },
-  { "name": "Moldova", "code": "md", "capital": "Chișinău", "difficulty": 3 },
-  { "name": "Montenegro", "code": "me", "capital": "Podgorica", "difficulty": 3 },
-  { "name": "North Macedonia", "code": "mk", "capital": "Skopje", "difficulty": 3 },
-  { "name": "Kosovo", "code": "xk", "capital": "Pristina", "difficulty": 3 },
-  { "name": "Liechtenstein", "code": "li", "capital": "Vaduz", "difficulty": 3 },
-  { "name": "San Marino", "code": "sm", "capital": "San Marino City", "difficulty": 3 },
-  { "name": "Andorra", "code": "ad", "capital": "Andorra la Vella", "difficulty": 3 },
-  { "name": "Monaco", "code": "mc", "capital": "Monaco", "difficulty": 3 },
-  { "name": "Suriname", "code": "sr", "capital": "Paramaribo", "difficulty": 3 },
-  { "name": "Guyana", "code": "gy", "capital": "Georgetown", "difficulty": 3 },
-  { "name": "Belize", "code": "bz", "capital": "Belmopan", "difficulty": 3 }
+  {
+    "name": "Afghanistan",
+    "code": "af",
+    "capital": "Kabul",
+    "difficulty": 2,
+    "latlng": [
+      33.0,
+      65.0
+    ]
+  },
+  {
+    "name": "Albania",
+    "code": "al",
+    "capital": "Tirana",
+    "difficulty": 2,
+    "latlng": [
+      41.0,
+      20.0
+    ]
+  },
+  {
+    "name": "Algeria",
+    "code": "dz",
+    "capital": "Algiers",
+    "difficulty": 2,
+    "latlng": [
+      28.0,
+      3.0
+    ]
+  },
+  {
+    "name": "American Samoa",
+    "code": "as",
+    "capital": "Pago Pago",
+    "difficulty": 3,
+    "latlng": [
+      -14.33333333,
+      -170.0
+    ]
+  },
+  {
+    "name": "Andorra",
+    "code": "ad",
+    "capital": "Andorra la Vella",
+    "difficulty": 3,
+    "latlng": [
+      42.5,
+      1.5
+    ]
+  },
+  {
+    "name": "Angola",
+    "code": "ao",
+    "capital": "Luanda",
+    "difficulty": 2,
+    "latlng": [
+      -12.5,
+      18.5
+    ]
+  },
+  {
+    "name": "Anguilla",
+    "code": "ai",
+    "capital": "The Valley",
+    "difficulty": 3,
+    "latlng": [
+      18.25,
+      -63.16666666
+    ]
+  },
+  {
+    "name": "Antarctica",
+    "code": "aq",
+    "capital": "",
+    "difficulty": 2,
+    "latlng": [
+      -90.0,
+      0.0
+    ]
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "code": "ag",
+    "capital": "Saint John's",
+    "difficulty": 3,
+    "latlng": [
+      17.05,
+      -61.8
+    ]
+  },
+  {
+    "name": "Argentina",
+    "code": "ar",
+    "capital": "Buenos Aires",
+    "difficulty": 1,
+    "latlng": [
+      -34.0,
+      -64.0
+    ]
+  },
+  {
+    "name": "Armenia",
+    "code": "am",
+    "capital": "Yerevan",
+    "difficulty": 2,
+    "latlng": [
+      40.0,
+      45.0
+    ]
+  },
+  {
+    "name": "Aruba",
+    "code": "aw",
+    "capital": "Oranjestad",
+    "difficulty": 3,
+    "latlng": [
+      12.5,
+      -69.96666666
+    ]
+  },
+  {
+    "name": "Australia",
+    "code": "au",
+    "capital": "Canberra",
+    "difficulty": 1,
+    "latlng": [
+      -27.0,
+      133.0
+    ]
+  },
+  {
+    "name": "Austria",
+    "code": "at",
+    "capital": "Vienna",
+    "difficulty": 2,
+    "latlng": [
+      47.33333333,
+      13.33333333
+    ]
+  },
+  {
+    "name": "Azerbaijan",
+    "code": "az",
+    "capital": "Baku",
+    "difficulty": 2,
+    "latlng": [
+      40.5,
+      47.5
+    ]
+  },
+  {
+    "name": "Bahamas",
+    "code": "bs",
+    "capital": "Nassau",
+    "difficulty": 3,
+    "latlng": [
+      25.0343,
+      -77.3963
+    ]
+  },
+  {
+    "name": "Bahrain",
+    "code": "bh",
+    "capital": "Manama",
+    "difficulty": 2,
+    "latlng": [
+      26.0,
+      50.55
+    ]
+  },
+  {
+    "name": "Bangladesh",
+    "code": "bd",
+    "capital": "Dhaka",
+    "difficulty": 1,
+    "latlng": [
+      24.0,
+      90.0
+    ]
+  },
+  {
+    "name": "Barbados",
+    "code": "bb",
+    "capital": "Bridgetown",
+    "difficulty": 3,
+    "latlng": [
+      13.16666666,
+      -59.53333333
+    ]
+  },
+  {
+    "name": "Belarus",
+    "code": "by",
+    "capital": "Minsk",
+    "difficulty": 2,
+    "latlng": [
+      53.0,
+      28.0
+    ]
+  },
+  {
+    "name": "Belgium",
+    "code": "be",
+    "capital": "Brussels",
+    "difficulty": 2,
+    "latlng": [
+      50.83333333,
+      4.0
+    ]
+  },
+  {
+    "name": "Belize",
+    "code": "bz",
+    "capital": "Belmopan",
+    "difficulty": 3,
+    "latlng": [
+      17.25,
+      -88.75
+    ]
+  },
+  {
+    "name": "Benin",
+    "code": "bj",
+    "capital": "Porto-Novo",
+    "difficulty": 2,
+    "latlng": [
+      9.5,
+      2.25
+    ]
+  },
+  {
+    "name": "Bermuda",
+    "code": "bm",
+    "capital": "Hamilton",
+    "difficulty": 3,
+    "latlng": [
+      32.33333333,
+      -64.75
+    ]
+  },
+  {
+    "name": "Bhutan",
+    "code": "bt",
+    "capital": "Thimphu",
+    "difficulty": 3,
+    "latlng": [
+      27.5,
+      90.5
+    ]
+  },
+  {
+    "name": "Bolivia",
+    "code": "bo",
+    "capital": "Sucre",
+    "difficulty": 2,
+    "latlng": [
+      -17.0,
+      -65.0
+    ]
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "code": "ba",
+    "capital": "Sarajevo",
+    "difficulty": 2,
+    "latlng": [
+      44.0,
+      18.0
+    ]
+  },
+  {
+    "name": "Botswana",
+    "code": "bw",
+    "capital": "Gaborone",
+    "difficulty": 2,
+    "latlng": [
+      -22.0,
+      24.0
+    ]
+  },
+  {
+    "name": "Brazil",
+    "code": "br",
+    "capital": "Bras\u00edlia",
+    "difficulty": 1,
+    "latlng": [
+      -10.0,
+      -55.0
+    ]
+  },
+  {
+    "name": "British Indian Ocean Territory",
+    "code": "io",
+    "capital": "Diego Garcia",
+    "difficulty": 3,
+    "latlng": [
+      -6.0,
+      71.5
+    ]
+  },
+  {
+    "name": "British Virgin Islands",
+    "code": "vg",
+    "capital": "Road Town",
+    "difficulty": 3,
+    "latlng": [
+      18.431383,
+      -64.62305
+    ]
+  },
+  {
+    "name": "Brunei",
+    "code": "bn",
+    "capital": "Bandar Seri Begawan",
+    "difficulty": 3,
+    "latlng": [
+      4.5,
+      114.66666666
+    ]
+  },
+  {
+    "name": "Bulgaria",
+    "code": "bg",
+    "capital": "Sofia",
+    "difficulty": 2,
+    "latlng": [
+      43.0,
+      25.0
+    ]
+  },
+  {
+    "name": "Burkina Faso",
+    "code": "bf",
+    "capital": "Ouagadougou",
+    "difficulty": 2,
+    "latlng": [
+      13.0,
+      -2.0
+    ]
+  },
+  {
+    "name": "Burundi",
+    "code": "bi",
+    "capital": "Gitega",
+    "difficulty": 2,
+    "latlng": [
+      -3.5,
+      30.0
+    ]
+  },
+  {
+    "name": "Cambodia",
+    "code": "kh",
+    "capital": "Phnom Penh",
+    "difficulty": 2,
+    "latlng": [
+      13.0,
+      105.0
+    ]
+  },
+  {
+    "name": "Cameroon",
+    "code": "cm",
+    "capital": "Yaound\u00e9",
+    "difficulty": 2,
+    "latlng": [
+      6.0,
+      12.0
+    ]
+  },
+  {
+    "name": "Canada",
+    "code": "ca",
+    "capital": "Ottawa",
+    "difficulty": 1,
+    "latlng": [
+      60.0,
+      -95.0
+    ]
+  },
+  {
+    "name": "Cape Verde",
+    "code": "cv",
+    "capital": "Praia",
+    "difficulty": 3,
+    "latlng": [
+      16.5388,
+      -23.0418
+    ]
+  },
+  {
+    "name": "Caribbean Netherlands",
+    "code": "bq",
+    "capital": "Kralendijk",
+    "difficulty": 3,
+    "latlng": [
+      12.18,
+      -68.25
+    ]
+  },
+  {
+    "name": "Cayman Islands",
+    "code": "ky",
+    "capital": "George Town",
+    "difficulty": 3,
+    "latlng": [
+      19.3133,
+      -81.2546
+    ]
+  },
+  {
+    "name": "Central African Republic",
+    "code": "cf",
+    "capital": "Bangui",
+    "difficulty": 2,
+    "latlng": [
+      7.0,
+      21.0
+    ]
+  },
+  {
+    "name": "Chad",
+    "code": "td",
+    "capital": "N'Djamena",
+    "difficulty": 2,
+    "latlng": [
+      15.0,
+      19.0
+    ]
+  },
+  {
+    "name": "Chile",
+    "code": "cl",
+    "capital": "Santiago",
+    "difficulty": 1,
+    "latlng": [
+      -30.0,
+      -71.0
+    ]
+  },
+  {
+    "name": "China",
+    "code": "cn",
+    "capital": "Beijing",
+    "difficulty": 1,
+    "latlng": [
+      35.0,
+      105.0
+    ]
+  },
+  {
+    "name": "Christmas Island",
+    "code": "cx",
+    "capital": "Flying Fish Cove",
+    "difficulty": 3,
+    "latlng": [
+      -10.5,
+      105.66666666
+    ]
+  },
+  {
+    "name": "Cocos (Keeling) Islands",
+    "code": "cc",
+    "capital": "West Island",
+    "difficulty": 3,
+    "latlng": [
+      -12.1642,
+      96.871
+    ]
+  },
+  {
+    "name": "Colombia",
+    "code": "co",
+    "capital": "Bogot\u00e1",
+    "difficulty": 1,
+    "latlng": [
+      4.0,
+      -72.0
+    ]
+  },
+  {
+    "name": "Comoros",
+    "code": "km",
+    "capital": "Moroni",
+    "difficulty": 3,
+    "latlng": [
+      -12.16666666,
+      44.25
+    ]
+  },
+  {
+    "name": "Cook Islands",
+    "code": "ck",
+    "capital": "Avarua",
+    "difficulty": 3,
+    "latlng": [
+      -21.23333333,
+      -159.76666666
+    ]
+  },
+  {
+    "name": "Costa Rica",
+    "code": "cr",
+    "capital": "San Jos\u00e9",
+    "difficulty": 2,
+    "latlng": [
+      10.0,
+      -84.0
+    ]
+  },
+  {
+    "name": "Croatia",
+    "code": "hr",
+    "capital": "Zagreb",
+    "difficulty": 2,
+    "latlng": [
+      45.16666666,
+      15.5
+    ]
+  },
+  {
+    "name": "Cuba",
+    "code": "cu",
+    "capital": "Havana",
+    "difficulty": 1,
+    "latlng": [
+      21.5,
+      -80.0
+    ]
+  },
+  {
+    "name": "Cura\u00e7ao",
+    "code": "cw",
+    "capital": "Willemstad",
+    "difficulty": 3,
+    "latlng": [
+      12.116667,
+      -68.933333
+    ]
+  },
+  {
+    "name": "Cyprus",
+    "code": "cy",
+    "capital": "Nicosia",
+    "difficulty": 2,
+    "latlng": [
+      35.0,
+      33.0
+    ]
+  },
+  {
+    "name": "Czechia",
+    "code": "cz",
+    "capital": "Prague",
+    "difficulty": 2,
+    "latlng": [
+      49.75,
+      15.5
+    ]
+  },
+  {
+    "name": "DR Congo",
+    "code": "cd",
+    "capital": "Kinshasa",
+    "difficulty": 1,
+    "latlng": [
+      0.0,
+      25.0
+    ]
+  },
+  {
+    "name": "Denmark",
+    "code": "dk",
+    "capital": "Copenhagen",
+    "difficulty": 2,
+    "latlng": [
+      56.0,
+      10.0
+    ]
+  },
+  {
+    "name": "Djibouti",
+    "code": "dj",
+    "capital": "Djibouti",
+    "difficulty": 2,
+    "latlng": [
+      11.5,
+      43.0
+    ]
+  },
+  {
+    "name": "Dominica",
+    "code": "dm",
+    "capital": "Roseau",
+    "difficulty": 3,
+    "latlng": [
+      15.41666666,
+      -61.33333333
+    ]
+  },
+  {
+    "name": "Dominican Republic",
+    "code": "do",
+    "capital": "Santo Domingo",
+    "difficulty": 2,
+    "latlng": [
+      19.0,
+      -70.66666666
+    ]
+  },
+  {
+    "name": "Ecuador",
+    "code": "ec",
+    "capital": "Quito",
+    "difficulty": 2,
+    "latlng": [
+      -2.0,
+      -77.5
+    ]
+  },
+  {
+    "name": "Egypt",
+    "code": "eg",
+    "capital": "Cairo",
+    "difficulty": 1,
+    "latlng": [
+      27.0,
+      30.0
+    ]
+  },
+  {
+    "name": "El Salvador",
+    "code": "sv",
+    "capital": "San Salvador",
+    "difficulty": 2,
+    "latlng": [
+      13.83333333,
+      -88.91666666
+    ]
+  },
+  {
+    "name": "Equatorial Guinea",
+    "code": "gq",
+    "capital": "Ciudad de la Paz",
+    "difficulty": 2,
+    "latlng": [
+      2.0,
+      10.0
+    ]
+  },
+  {
+    "name": "Eritrea",
+    "code": "er",
+    "capital": "Asmara",
+    "difficulty": 2,
+    "latlng": [
+      15.0,
+      39.0
+    ]
+  },
+  {
+    "name": "Estonia",
+    "code": "ee",
+    "capital": "Tallinn",
+    "difficulty": 2,
+    "latlng": [
+      59.0,
+      26.0
+    ]
+  },
+  {
+    "name": "Eswatini",
+    "code": "sz",
+    "capital": "Mbabane",
+    "difficulty": 2,
+    "latlng": [
+      -26.5,
+      31.5
+    ]
+  },
+  {
+    "name": "Ethiopia",
+    "code": "et",
+    "capital": "Addis Ababa",
+    "difficulty": 1,
+    "latlng": [
+      8.0,
+      38.0
+    ]
+  },
+  {
+    "name": "Falkland Islands",
+    "code": "fk",
+    "capital": "Stanley",
+    "difficulty": 3,
+    "latlng": [
+      -51.75,
+      -59.0
+    ]
+  },
+  {
+    "name": "Faroe Islands",
+    "code": "fo",
+    "capital": "T\u00f3rshavn",
+    "difficulty": 3,
+    "latlng": [
+      62.0,
+      -7.0
+    ]
+  },
+  {
+    "name": "Fiji",
+    "code": "fj",
+    "capital": "Suva",
+    "difficulty": 3,
+    "latlng": [
+      -17.7134,
+      178.065
+    ]
+  },
+  {
+    "name": "Finland",
+    "code": "fi",
+    "capital": "Helsinki",
+    "difficulty": 2,
+    "latlng": [
+      64.0,
+      26.0
+    ]
+  },
+  {
+    "name": "France",
+    "code": "fr",
+    "capital": "Paris",
+    "difficulty": 1,
+    "latlng": [
+      46.0,
+      2.0
+    ]
+  },
+  {
+    "name": "French Guiana",
+    "code": "gf",
+    "capital": "Cayenne",
+    "difficulty": 3,
+    "latlng": [
+      4.0,
+      -53.0
+    ]
+  },
+  {
+    "name": "French Polynesia",
+    "code": "pf",
+    "capital": "Papeet\u0113",
+    "difficulty": 3,
+    "latlng": [
+      -17.6797,
+      -149.4068
+    ]
+  },
+  {
+    "name": "French Southern and Antarctic Lands",
+    "code": "tf",
+    "capital": "Port-aux-Fran\u00e7ais",
+    "difficulty": 3,
+    "latlng": [
+      -49.25,
+      69.167
+    ]
+  },
+  {
+    "name": "Gabon",
+    "code": "ga",
+    "capital": "Libreville",
+    "difficulty": 2,
+    "latlng": [
+      -1.0,
+      11.75
+    ]
+  },
+  {
+    "name": "Gambia",
+    "code": "gm",
+    "capital": "Banjul",
+    "difficulty": 2,
+    "latlng": [
+      13.46666666,
+      -16.56666666
+    ]
+  },
+  {
+    "name": "Georgia",
+    "code": "ge",
+    "capital": "Tbilisi",
+    "difficulty": 2,
+    "latlng": [
+      42.0,
+      43.5
+    ]
+  },
+  {
+    "name": "Germany",
+    "code": "de",
+    "capital": "Berlin",
+    "difficulty": 1,
+    "latlng": [
+      51.0,
+      9.0
+    ]
+  },
+  {
+    "name": "Ghana",
+    "code": "gh",
+    "capital": "Accra",
+    "difficulty": 2,
+    "latlng": [
+      8.0,
+      -2.0
+    ]
+  },
+  {
+    "name": "Gibraltar",
+    "code": "gi",
+    "capital": "Gibraltar",
+    "difficulty": 3,
+    "latlng": [
+      36.13333333,
+      -5.35
+    ]
+  },
+  {
+    "name": "Greece",
+    "code": "gr",
+    "capital": "Athens",
+    "difficulty": 1,
+    "latlng": [
+      39.0,
+      22.0
+    ]
+  },
+  {
+    "name": "Greenland",
+    "code": "gl",
+    "capital": "Nuuk",
+    "difficulty": 2,
+    "latlng": [
+      72.0,
+      -40.0
+    ]
+  },
+  {
+    "name": "Grenada",
+    "code": "gd",
+    "capital": "St. George's",
+    "difficulty": 3,
+    "latlng": [
+      12.11666666,
+      -61.66666666
+    ]
+  },
+  {
+    "name": "Guadeloupe",
+    "code": "gp",
+    "capital": "Basse-Terre",
+    "difficulty": 3,
+    "latlng": [
+      16.25,
+      -61.583333
+    ]
+  },
+  {
+    "name": "Guam",
+    "code": "gu",
+    "capital": "Hag\u00e5t\u00f1a",
+    "difficulty": 3,
+    "latlng": [
+      13.46666666,
+      144.78333333
+    ]
+  },
+  {
+    "name": "Guatemala",
+    "code": "gt",
+    "capital": "Guatemala City",
+    "difficulty": 2,
+    "latlng": [
+      15.5,
+      -90.25
+    ]
+  },
+  {
+    "name": "Guernsey",
+    "code": "gg",
+    "capital": "St. Peter Port",
+    "difficulty": 3,
+    "latlng": [
+      49.46666666,
+      -2.58333333
+    ]
+  },
+  {
+    "name": "Guinea",
+    "code": "gn",
+    "capital": "Conakry",
+    "difficulty": 2,
+    "latlng": [
+      11.0,
+      -10.0
+    ]
+  },
+  {
+    "name": "Guinea-Bissau",
+    "code": "gw",
+    "capital": "Bissau",
+    "difficulty": 2,
+    "latlng": [
+      12.0,
+      -15.0
+    ]
+  },
+  {
+    "name": "Guyana",
+    "code": "gy",
+    "capital": "Georgetown",
+    "difficulty": 2,
+    "latlng": [
+      5.0,
+      -59.0
+    ]
+  },
+  {
+    "name": "Haiti",
+    "code": "ht",
+    "capital": "Port-au-Prince",
+    "difficulty": 2,
+    "latlng": [
+      19.0,
+      -72.41666666
+    ]
+  },
+  {
+    "name": "Honduras",
+    "code": "hn",
+    "capital": "Tegucigalpa",
+    "difficulty": 2,
+    "latlng": [
+      15.0,
+      -86.5
+    ]
+  },
+  {
+    "name": "Hong Kong",
+    "code": "hk",
+    "capital": "City of Victoria",
+    "difficulty": 2,
+    "latlng": [
+      22.267,
+      114.188
+    ]
+  },
+  {
+    "name": "Hungary",
+    "code": "hu",
+    "capital": "Budapest",
+    "difficulty": 2,
+    "latlng": [
+      47.0,
+      20.0
+    ]
+  },
+  {
+    "name": "Iceland",
+    "code": "is",
+    "capital": "Reykjavik",
+    "difficulty": 2,
+    "latlng": [
+      65.0,
+      -18.0
+    ]
+  },
+  {
+    "name": "India",
+    "code": "in",
+    "capital": "New Delhi",
+    "difficulty": 1,
+    "latlng": [
+      20.0,
+      77.0
+    ]
+  },
+  {
+    "name": "Indonesia",
+    "code": "id",
+    "capital": "Jakarta",
+    "difficulty": 1,
+    "latlng": [
+      -5.0,
+      120.0
+    ]
+  },
+  {
+    "name": "Iran",
+    "code": "ir",
+    "capital": "Tehran",
+    "difficulty": 2,
+    "latlng": [
+      32.0,
+      53.0
+    ]
+  },
+  {
+    "name": "Iraq",
+    "code": "iq",
+    "capital": "Baghdad",
+    "difficulty": 2,
+    "latlng": [
+      33.0,
+      44.0
+    ]
+  },
+  {
+    "name": "Ireland",
+    "code": "ie",
+    "capital": "Dublin",
+    "difficulty": 1,
+    "latlng": [
+      53.0,
+      -8.0
+    ]
+  },
+  {
+    "name": "Isle of Man",
+    "code": "im",
+    "capital": "Douglas",
+    "difficulty": 3,
+    "latlng": [
+      54.25,
+      -4.5
+    ]
+  },
+  {
+    "name": "Israel",
+    "code": "il",
+    "capital": "Jerusalem",
+    "difficulty": 1,
+    "latlng": [
+      31.47,
+      35.13
+    ]
+  },
+  {
+    "name": "Italy",
+    "code": "it",
+    "capital": "Rome",
+    "difficulty": 1,
+    "latlng": [
+      42.83333333,
+      12.83333333
+    ]
+  },
+  {
+    "name": "Ivory Coast",
+    "code": "ci",
+    "capital": "Yamoussoukro",
+    "difficulty": 2,
+    "latlng": [
+      8.0,
+      -5.0
+    ]
+  },
+  {
+    "name": "Jamaica",
+    "code": "jm",
+    "capital": "Kingston",
+    "difficulty": 2,
+    "latlng": [
+      18.25,
+      -77.5
+    ]
+  },
+  {
+    "name": "Japan",
+    "code": "jp",
+    "capital": "Tokyo",
+    "difficulty": 1,
+    "latlng": [
+      36.0,
+      138.0
+    ]
+  },
+  {
+    "name": "Jersey",
+    "code": "je",
+    "capital": "Saint Helier",
+    "difficulty": 3,
+    "latlng": [
+      49.25,
+      -2.16666666
+    ]
+  },
+  {
+    "name": "Jordan",
+    "code": "jo",
+    "capital": "Amman",
+    "difficulty": 2,
+    "latlng": [
+      31.0,
+      36.0
+    ]
+  },
+  {
+    "name": "Kazakhstan",
+    "code": "kz",
+    "capital": "Astana",
+    "difficulty": 2,
+    "latlng": [
+      48.0196,
+      66.9237
+    ]
+  },
+  {
+    "name": "Kenya",
+    "code": "ke",
+    "capital": "Nairobi",
+    "difficulty": 2,
+    "latlng": [
+      1.0,
+      38.0
+    ]
+  },
+  {
+    "name": "Kiribati",
+    "code": "ki",
+    "capital": "South Tarawa",
+    "difficulty": 3,
+    "latlng": [
+      1.41666666,
+      173.0
+    ]
+  },
+  {
+    "name": "Kosovo",
+    "code": "xk",
+    "capital": "Pristina",
+    "difficulty": 2,
+    "latlng": [
+      42.666667,
+      21.166667
+    ]
+  },
+  {
+    "name": "Kuwait",
+    "code": "kw",
+    "capital": "Kuwait City",
+    "difficulty": 2,
+    "latlng": [
+      29.5,
+      45.75
+    ]
+  },
+  {
+    "name": "Kyrgyzstan",
+    "code": "kg",
+    "capital": "Bishkek",
+    "difficulty": 2,
+    "latlng": [
+      41.0,
+      75.0
+    ]
+  },
+  {
+    "name": "Laos",
+    "code": "la",
+    "capital": "Vientiane",
+    "difficulty": 2,
+    "latlng": [
+      18.0,
+      105.0
+    ]
+  },
+  {
+    "name": "Latvia",
+    "code": "lv",
+    "capital": "Riga",
+    "difficulty": 2,
+    "latlng": [
+      57.0,
+      25.0
+    ]
+  },
+  {
+    "name": "Lebanon",
+    "code": "lb",
+    "capital": "Beirut",
+    "difficulty": 2,
+    "latlng": [
+      33.83333333,
+      35.83333333
+    ]
+  },
+  {
+    "name": "Lesotho",
+    "code": "ls",
+    "capital": "Maseru",
+    "difficulty": 2,
+    "latlng": [
+      -29.5,
+      28.5
+    ]
+  },
+  {
+    "name": "Liberia",
+    "code": "lr",
+    "capital": "Monrovia",
+    "difficulty": 2,
+    "latlng": [
+      6.5,
+      -9.5
+    ]
+  },
+  {
+    "name": "Libya",
+    "code": "ly",
+    "capital": "Tripoli",
+    "difficulty": 2,
+    "latlng": [
+      25.0,
+      17.0
+    ]
+  },
+  {
+    "name": "Liechtenstein",
+    "code": "li",
+    "capital": "Vaduz",
+    "difficulty": 3,
+    "latlng": [
+      47.26666666,
+      9.53333333
+    ]
+  },
+  {
+    "name": "Lithuania",
+    "code": "lt",
+    "capital": "Vilnius",
+    "difficulty": 2,
+    "latlng": [
+      56.0,
+      24.0
+    ]
+  },
+  {
+    "name": "Luxembourg",
+    "code": "lu",
+    "capital": "Luxembourg",
+    "difficulty": 3,
+    "latlng": [
+      49.75,
+      6.16666666
+    ]
+  },
+  {
+    "name": "Macau",
+    "code": "mo",
+    "capital": "",
+    "difficulty": 3,
+    "latlng": [
+      22.16666666,
+      113.55
+    ]
+  },
+  {
+    "name": "Madagascar",
+    "code": "mg",
+    "capital": "Antananarivo",
+    "difficulty": 2,
+    "latlng": [
+      -20.0,
+      47.0
+    ]
+  },
+  {
+    "name": "Malawi",
+    "code": "mw",
+    "capital": "Lilongwe",
+    "difficulty": 2,
+    "latlng": [
+      -13.5,
+      34.0
+    ]
+  },
+  {
+    "name": "Malaysia",
+    "code": "my",
+    "capital": "Kuala Lumpur",
+    "difficulty": 2,
+    "latlng": [
+      2.5,
+      112.5
+    ]
+  },
+  {
+    "name": "Maldives",
+    "code": "mv",
+    "capital": "Mal\u00e9",
+    "difficulty": 3,
+    "latlng": [
+      3.25,
+      73.0
+    ]
+  },
+  {
+    "name": "Mali",
+    "code": "ml",
+    "capital": "Bamako",
+    "difficulty": 2,
+    "latlng": [
+      17.0,
+      -4.0
+    ]
+  },
+  {
+    "name": "Malta",
+    "code": "mt",
+    "capital": "Valletta",
+    "difficulty": 3,
+    "latlng": [
+      35.9375,
+      14.3754
+    ]
+  },
+  {
+    "name": "Marshall Islands",
+    "code": "mh",
+    "capital": "Majuro",
+    "difficulty": 3,
+    "latlng": [
+      9.0,
+      168.0
+    ]
+  },
+  {
+    "name": "Martinique",
+    "code": "mq",
+    "capital": "Fort-de-France",
+    "difficulty": 3,
+    "latlng": [
+      14.666667,
+      -61.0
+    ]
+  },
+  {
+    "name": "Mauritania",
+    "code": "mr",
+    "capital": "Nouakchott",
+    "difficulty": 2,
+    "latlng": [
+      20.0,
+      -12.0
+    ]
+  },
+  {
+    "name": "Mauritius",
+    "code": "mu",
+    "capital": "Port Louis",
+    "difficulty": 2,
+    "latlng": [
+      -20.28333333,
+      57.55
+    ]
+  },
+  {
+    "name": "Mayotte",
+    "code": "yt",
+    "capital": "Mamoudzou",
+    "difficulty": 3,
+    "latlng": [
+      -12.83333333,
+      45.16666666
+    ]
+  },
+  {
+    "name": "Mexico",
+    "code": "mx",
+    "capital": "Mexico City",
+    "difficulty": 1,
+    "latlng": [
+      23.0,
+      -102.0
+    ]
+  },
+  {
+    "name": "Micronesia",
+    "code": "fm",
+    "capital": "Palikir",
+    "difficulty": 3,
+    "latlng": [
+      6.91666666,
+      158.25
+    ]
+  },
+  {
+    "name": "Moldova",
+    "code": "md",
+    "capital": "Chi\u0219in\u0103u",
+    "difficulty": 2,
+    "latlng": [
+      47.0,
+      29.0
+    ]
+  },
+  {
+    "name": "Monaco",
+    "code": "mc",
+    "capital": "Monaco",
+    "difficulty": 3,
+    "latlng": [
+      43.73333333,
+      7.4
+    ]
+  },
+  {
+    "name": "Mongolia",
+    "code": "mn",
+    "capital": "Ulan Bator",
+    "difficulty": 2,
+    "latlng": [
+      46.0,
+      105.0
+    ]
+  },
+  {
+    "name": "Montenegro",
+    "code": "me",
+    "capital": "Podgorica",
+    "difficulty": 3,
+    "latlng": [
+      42.5,
+      19.3
+    ]
+  },
+  {
+    "name": "Montserrat",
+    "code": "ms",
+    "capital": "Plymouth",
+    "difficulty": 3,
+    "latlng": [
+      16.75,
+      -62.2
+    ]
+  },
+  {
+    "name": "Morocco",
+    "code": "ma",
+    "capital": "Rabat",
+    "difficulty": 2,
+    "latlng": [
+      32.0,
+      -5.0
+    ]
+  },
+  {
+    "name": "Mozambique",
+    "code": "mz",
+    "capital": "Maputo",
+    "difficulty": 2,
+    "latlng": [
+      -18.25,
+      35.0
+    ]
+  },
+  {
+    "name": "Myanmar",
+    "code": "mm",
+    "capital": "Naypyidaw",
+    "difficulty": 2,
+    "latlng": [
+      22.0,
+      98.0
+    ]
+  },
+  {
+    "name": "Namibia",
+    "code": "na",
+    "capital": "Windhoek",
+    "difficulty": 2,
+    "latlng": [
+      -22.0,
+      17.0
+    ]
+  },
+  {
+    "name": "Nauru",
+    "code": "nr",
+    "capital": "Yaren",
+    "difficulty": 3,
+    "latlng": [
+      -0.53333333,
+      166.91666666
+    ]
+  },
+  {
+    "name": "Nepal",
+    "code": "np",
+    "capital": "Kathmandu",
+    "difficulty": 2,
+    "latlng": [
+      28.0,
+      84.0
+    ]
+  },
+  {
+    "name": "Netherlands",
+    "code": "nl",
+    "capital": "Amsterdam",
+    "difficulty": 1,
+    "latlng": [
+      52.5,
+      5.75
+    ]
+  },
+  {
+    "name": "New Caledonia",
+    "code": "nc",
+    "capital": "Noum\u00e9a",
+    "difficulty": 3,
+    "latlng": [
+      -21.5,
+      165.5
+    ]
+  },
+  {
+    "name": "New Zealand",
+    "code": "nz",
+    "capital": "Wellington",
+    "difficulty": 1,
+    "latlng": [
+      -41.0,
+      174.0
+    ]
+  },
+  {
+    "name": "Nicaragua",
+    "code": "ni",
+    "capital": "Managua",
+    "difficulty": 2,
+    "latlng": [
+      13.0,
+      -85.0
+    ]
+  },
+  {
+    "name": "Niger",
+    "code": "ne",
+    "capital": "Niamey",
+    "difficulty": 2,
+    "latlng": [
+      16.0,
+      8.0
+    ]
+  },
+  {
+    "name": "Nigeria",
+    "code": "ng",
+    "capital": "Abuja",
+    "difficulty": 1,
+    "latlng": [
+      10.0,
+      8.0
+    ]
+  },
+  {
+    "name": "Niue",
+    "code": "nu",
+    "capital": "Alofi",
+    "difficulty": 3,
+    "latlng": [
+      -19.03333333,
+      -169.86666666
+    ]
+  },
+  {
+    "name": "Norfolk Island",
+    "code": "nf",
+    "capital": "Kingston",
+    "difficulty": 3,
+    "latlng": [
+      -29.03333333,
+      167.95
+    ]
+  },
+  {
+    "name": "North Korea",
+    "code": "kp",
+    "capital": "Pyongyang",
+    "difficulty": 2,
+    "latlng": [
+      40.0,
+      127.0
+    ]
+  },
+  {
+    "name": "North Macedonia",
+    "code": "mk",
+    "capital": "Skopje",
+    "difficulty": 2,
+    "latlng": [
+      41.83333333,
+      22.0
+    ]
+  },
+  {
+    "name": "Northern Mariana Islands",
+    "code": "mp",
+    "capital": "Saipan",
+    "difficulty": 3,
+    "latlng": [
+      15.2,
+      145.75
+    ]
+  },
+  {
+    "name": "Norway",
+    "code": "no",
+    "capital": "Oslo",
+    "difficulty": 1,
+    "latlng": [
+      62.0,
+      10.0
+    ]
+  },
+  {
+    "name": "Oman",
+    "code": "om",
+    "capital": "Muscat",
+    "difficulty": 2,
+    "latlng": [
+      21.0,
+      57.0
+    ]
+  },
+  {
+    "name": "Pakistan",
+    "code": "pk",
+    "capital": "Islamabad",
+    "difficulty": 1,
+    "latlng": [
+      30.0,
+      70.0
+    ]
+  },
+  {
+    "name": "Palau",
+    "code": "pw",
+    "capital": "Ngerulmud",
+    "difficulty": 3,
+    "latlng": [
+      7.5,
+      134.5
+    ]
+  },
+  {
+    "name": "Palestine",
+    "code": "ps",
+    "capital": "Ramallah",
+    "difficulty": 2,
+    "latlng": [
+      31.9,
+      35.2
+    ]
+  },
+  {
+    "name": "Panama",
+    "code": "pa",
+    "capital": "Panama City",
+    "difficulty": 2,
+    "latlng": [
+      9.0,
+      -80.0
+    ]
+  },
+  {
+    "name": "Papua New Guinea",
+    "code": "pg",
+    "capital": "Port Moresby",
+    "difficulty": 2,
+    "latlng": [
+      -6.0,
+      147.0
+    ]
+  },
+  {
+    "name": "Paraguay",
+    "code": "py",
+    "capital": "Asunci\u00f3n",
+    "difficulty": 2,
+    "latlng": [
+      -23.0,
+      -58.0
+    ]
+  },
+  {
+    "name": "Peru",
+    "code": "pe",
+    "capital": "Lima",
+    "difficulty": 1,
+    "latlng": [
+      -10.0,
+      -76.0
+    ]
+  },
+  {
+    "name": "Philippines",
+    "code": "ph",
+    "capital": "Manila",
+    "difficulty": 1,
+    "latlng": [
+      13.0,
+      122.0
+    ]
+  },
+  {
+    "name": "Pitcairn Islands",
+    "code": "pn",
+    "capital": "Adamstown",
+    "difficulty": 3,
+    "latlng": [
+      -25.06666666,
+      -130.1
+    ]
+  },
+  {
+    "name": "Poland",
+    "code": "pl",
+    "capital": "Warsaw",
+    "difficulty": 1,
+    "latlng": [
+      52.0,
+      20.0
+    ]
+  },
+  {
+    "name": "Portugal",
+    "code": "pt",
+    "capital": "Lisbon",
+    "difficulty": 1,
+    "latlng": [
+      39.5,
+      -8.0
+    ]
+  },
+  {
+    "name": "Puerto Rico",
+    "code": "pr",
+    "capital": "San Juan",
+    "difficulty": 2,
+    "latlng": [
+      18.25,
+      -66.5
+    ]
+  },
+  {
+    "name": "Qatar",
+    "code": "qa",
+    "capital": "Doha",
+    "difficulty": 2,
+    "latlng": [
+      25.5,
+      51.25
+    ]
+  },
+  {
+    "name": "Republic of the Congo",
+    "code": "cg",
+    "capital": "Brazzaville",
+    "difficulty": 2,
+    "latlng": [
+      -1.0,
+      15.0
+    ]
+  },
+  {
+    "name": "Romania",
+    "code": "ro",
+    "capital": "Bucharest",
+    "difficulty": 2,
+    "latlng": [
+      46.0,
+      25.0
+    ]
+  },
+  {
+    "name": "Russia",
+    "code": "ru",
+    "capital": "Moscow",
+    "difficulty": 1,
+    "latlng": [
+      60.0,
+      100.0
+    ]
+  },
+  {
+    "name": "Rwanda",
+    "code": "rw",
+    "capital": "Kigali",
+    "difficulty": 2,
+    "latlng": [
+      -2.0,
+      30.0
+    ]
+  },
+  {
+    "name": "R\u00e9union",
+    "code": "re",
+    "capital": "Saint-Denis",
+    "difficulty": 3,
+    "latlng": [
+      -21.15,
+      55.5
+    ]
+  },
+  {
+    "name": "Saint Barth\u00e9lemy",
+    "code": "bl",
+    "capital": "Gustavia",
+    "difficulty": 3,
+    "latlng": [
+      18.5,
+      -63.41666666
+    ]
+  },
+  {
+    "name": "Saint Helena, Ascension and Tristan da Cunha",
+    "code": "sh",
+    "capital": "Jamestown",
+    "difficulty": 3,
+    "latlng": [
+      -15.95,
+      -5.72
+    ]
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "code": "kn",
+    "capital": "Basseterre",
+    "difficulty": 3,
+    "latlng": [
+      17.33333333,
+      -62.75
+    ]
+  },
+  {
+    "name": "Saint Lucia",
+    "code": "lc",
+    "capital": "Castries",
+    "difficulty": 3,
+    "latlng": [
+      13.88333333,
+      -60.96666666
+    ]
+  },
+  {
+    "name": "Saint Martin",
+    "code": "mf",
+    "capital": "Marigot",
+    "difficulty": 3,
+    "latlng": [
+      18.0708,
+      -63.0501
+    ]
+  },
+  {
+    "name": "Saint Pierre and Miquelon",
+    "code": "pm",
+    "capital": "Saint-Pierre",
+    "difficulty": 3,
+    "latlng": [
+      46.83333333,
+      -56.33333333
+    ]
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "code": "vc",
+    "capital": "Kingstown",
+    "difficulty": 3,
+    "latlng": [
+      13.25,
+      -61.2
+    ]
+  },
+  {
+    "name": "Samoa",
+    "code": "ws",
+    "capital": "Apia",
+    "difficulty": 3,
+    "latlng": [
+      -13.58333333,
+      -172.33333333
+    ]
+  },
+  {
+    "name": "San Marino",
+    "code": "sm",
+    "capital": "City of San Marino",
+    "difficulty": 3,
+    "latlng": [
+      43.76666666,
+      12.41666666
+    ]
+  },
+  {
+    "name": "Saudi Arabia",
+    "code": "sa",
+    "capital": "Riyadh",
+    "difficulty": 1,
+    "latlng": [
+      25.0,
+      45.0
+    ]
+  },
+  {
+    "name": "Senegal",
+    "code": "sn",
+    "capital": "Dakar",
+    "difficulty": 2,
+    "latlng": [
+      14.0,
+      -14.0
+    ]
+  },
+  {
+    "name": "Serbia",
+    "code": "rs",
+    "capital": "Belgrade",
+    "difficulty": 2,
+    "latlng": [
+      44.0,
+      21.0
+    ]
+  },
+  {
+    "name": "Seychelles",
+    "code": "sc",
+    "capital": "Victoria",
+    "difficulty": 3,
+    "latlng": [
+      -4.58333333,
+      55.66666666
+    ]
+  },
+  {
+    "name": "Sierra Leone",
+    "code": "sl",
+    "capital": "Freetown",
+    "difficulty": 2,
+    "latlng": [
+      8.5,
+      -11.5
+    ]
+  },
+  {
+    "name": "Singapore",
+    "code": "sg",
+    "capital": "Singapore",
+    "difficulty": 2,
+    "latlng": [
+      1.36666666,
+      103.8
+    ]
+  },
+  {
+    "name": "Sint Maarten",
+    "code": "sx",
+    "capital": "Philipsburg",
+    "difficulty": 3,
+    "latlng": [
+      18.033333,
+      -63.05
+    ]
+  },
+  {
+    "name": "Slovakia",
+    "code": "sk",
+    "capital": "Bratislava",
+    "difficulty": 2,
+    "latlng": [
+      48.66666666,
+      19.5
+    ]
+  },
+  {
+    "name": "Slovenia",
+    "code": "si",
+    "capital": "Ljubljana",
+    "difficulty": 2,
+    "latlng": [
+      46.11666666,
+      14.81666666
+    ]
+  },
+  {
+    "name": "Solomon Islands",
+    "code": "sb",
+    "capital": "Honiara",
+    "difficulty": 3,
+    "latlng": [
+      -8.0,
+      159.0
+    ]
+  },
+  {
+    "name": "Somalia",
+    "code": "so",
+    "capital": "Mogadishu",
+    "difficulty": 2,
+    "latlng": [
+      10.0,
+      49.0
+    ]
+  },
+  {
+    "name": "South Africa",
+    "code": "za",
+    "capital": "Pretoria",
+    "difficulty": 1,
+    "latlng": [
+      -29.0,
+      24.0
+    ]
+  },
+  {
+    "name": "South Georgia",
+    "code": "gs",
+    "capital": "King Edward Point",
+    "difficulty": 3,
+    "latlng": [
+      -54.5,
+      -37.0
+    ]
+  },
+  {
+    "name": "South Korea",
+    "code": "kr",
+    "capital": "Seoul",
+    "difficulty": 1,
+    "latlng": [
+      37.0,
+      127.5
+    ]
+  },
+  {
+    "name": "South Sudan",
+    "code": "ss",
+    "capital": "Juba",
+    "difficulty": 2,
+    "latlng": [
+      7.0,
+      30.0
+    ]
+  },
+  {
+    "name": "Spain",
+    "code": "es",
+    "capital": "Madrid",
+    "difficulty": 1,
+    "latlng": [
+      40.0,
+      -4.0
+    ]
+  },
+  {
+    "name": "Sri Lanka",
+    "code": "lk",
+    "capital": "Sri Jayawardenepura Kotte",
+    "difficulty": 2,
+    "latlng": [
+      7.0,
+      81.0
+    ]
+  },
+  {
+    "name": "Sudan",
+    "code": "sd",
+    "capital": "Khartoum",
+    "difficulty": 2,
+    "latlng": [
+      15.0,
+      30.0
+    ]
+  },
+  {
+    "name": "Suriname",
+    "code": "sr",
+    "capital": "Paramaribo",
+    "difficulty": 2,
+    "latlng": [
+      4.0,
+      -56.0
+    ]
+  },
+  {
+    "name": "Svalbard and Jan Mayen",
+    "code": "sj",
+    "capital": "Longyearbyen",
+    "difficulty": 3,
+    "latlng": [
+      78.0,
+      20.0
+    ]
+  },
+  {
+    "name": "Sweden",
+    "code": "se",
+    "capital": "Stockholm",
+    "difficulty": 1,
+    "latlng": [
+      62.0,
+      15.0
+    ]
+  },
+  {
+    "name": "Switzerland",
+    "code": "ch",
+    "capital": "Bern",
+    "difficulty": 1,
+    "latlng": [
+      47.0,
+      8.0
+    ]
+  },
+  {
+    "name": "Syria",
+    "code": "sy",
+    "capital": "Damascus",
+    "difficulty": 2,
+    "latlng": [
+      35.0,
+      38.0
+    ]
+  },
+  {
+    "name": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+    "code": "st",
+    "capital": "S\u00e3o Tom\u00e9",
+    "difficulty": 3,
+    "latlng": [
+      1.0,
+      7.0
+    ]
+  },
+  {
+    "name": "Taiwan",
+    "code": "tw",
+    "capital": "Taipei",
+    "difficulty": 2,
+    "latlng": [
+      23.5,
+      121.0
+    ]
+  },
+  {
+    "name": "Tajikistan",
+    "code": "tj",
+    "capital": "Dushanbe",
+    "difficulty": 2,
+    "latlng": [
+      39.0,
+      71.0
+    ]
+  },
+  {
+    "name": "Tanzania",
+    "code": "tz",
+    "capital": "Dodoma",
+    "difficulty": 2,
+    "latlng": [
+      -6.0,
+      35.0
+    ]
+  },
+  {
+    "name": "Thailand",
+    "code": "th",
+    "capital": "Bangkok",
+    "difficulty": 1,
+    "latlng": [
+      15.0,
+      100.0
+    ]
+  },
+  {
+    "name": "Timor-Leste",
+    "code": "tl",
+    "capital": "Dili",
+    "difficulty": 2,
+    "latlng": [
+      -8.83333333,
+      125.91666666
+    ]
+  },
+  {
+    "name": "Togo",
+    "code": "tg",
+    "capital": "Lom\u00e9",
+    "difficulty": 2,
+    "latlng": [
+      8.0,
+      1.16666666
+    ]
+  },
+  {
+    "name": "Tokelau",
+    "code": "tk",
+    "capital": "Fakaofo",
+    "difficulty": 3,
+    "latlng": [
+      -9.0,
+      -172.0
+    ]
+  },
+  {
+    "name": "Tonga",
+    "code": "to",
+    "capital": "Nuku'alofa",
+    "difficulty": 3,
+    "latlng": [
+      -20.0,
+      -175.0
+    ]
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "code": "tt",
+    "capital": "Port of Spain",
+    "difficulty": 2,
+    "latlng": [
+      10.6918,
+      -61.2225
+    ]
+  },
+  {
+    "name": "Tunisia",
+    "code": "tn",
+    "capital": "Tunis",
+    "difficulty": 2,
+    "latlng": [
+      34.0,
+      9.0
+    ]
+  },
+  {
+    "name": "Turkey",
+    "code": "tr",
+    "capital": "Ankara",
+    "difficulty": 1,
+    "latlng": [
+      39.0,
+      35.0
+    ]
+  },
+  {
+    "name": "Turkmenistan",
+    "code": "tm",
+    "capital": "Ashgabat",
+    "difficulty": 2,
+    "latlng": [
+      40.0,
+      60.0
+    ]
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "code": "tc",
+    "capital": "Cockburn Town",
+    "difficulty": 3,
+    "latlng": [
+      21.75,
+      -71.58333333
+    ]
+  },
+  {
+    "name": "Tuvalu",
+    "code": "tv",
+    "capital": "Funafuti",
+    "difficulty": 3,
+    "latlng": [
+      -8.0,
+      178.0
+    ]
+  },
+  {
+    "name": "UK",
+    "code": "gb",
+    "capital": "London",
+    "difficulty": 1,
+    "latlng": [
+      54.0,
+      -2.0
+    ]
+  },
+  {
+    "name": "USA",
+    "code": "us",
+    "capital": "Washington, D.C.",
+    "difficulty": 1,
+    "latlng": [
+      38.0,
+      -97.0
+    ]
+  },
+  {
+    "name": "Uganda",
+    "code": "ug",
+    "capital": "Kampala",
+    "difficulty": 2,
+    "latlng": [
+      1.0,
+      32.0
+    ]
+  },
+  {
+    "name": "Ukraine",
+    "code": "ua",
+    "capital": "Kyiv",
+    "difficulty": 2,
+    "latlng": [
+      49.0,
+      32.0
+    ]
+  },
+  {
+    "name": "United Arab Emirates",
+    "code": "ae",
+    "capital": "Abu Dhabi",
+    "difficulty": 2,
+    "latlng": [
+      24.0,
+      54.0
+    ]
+  },
+  {
+    "name": "United States Minor Outlying Islands",
+    "code": "um",
+    "capital": "Washington DC",
+    "difficulty": 3,
+    "latlng": [
+      19.3,
+      166.633333
+    ]
+  },
+  {
+    "name": "United States Virgin Islands",
+    "code": "vi",
+    "capital": "Charlotte Amalie",
+    "difficulty": 3,
+    "latlng": [
+      18.35,
+      -64.933333
+    ]
+  },
+  {
+    "name": "Uruguay",
+    "code": "uy",
+    "capital": "Montevideo",
+    "difficulty": 2,
+    "latlng": [
+      -33.0,
+      -56.0
+    ]
+  },
+  {
+    "name": "Uzbekistan",
+    "code": "uz",
+    "capital": "Tashkent",
+    "difficulty": 2,
+    "latlng": [
+      41.0,
+      64.0
+    ]
+  },
+  {
+    "name": "Vanuatu",
+    "code": "vu",
+    "capital": "Port Vila",
+    "difficulty": 3,
+    "latlng": [
+      -16.0,
+      167.0
+    ]
+  },
+  {
+    "name": "Vatican City",
+    "code": "va",
+    "capital": "Vatican City",
+    "difficulty": 3,
+    "latlng": [
+      41.9,
+      12.45
+    ]
+  },
+  {
+    "name": "Venezuela",
+    "code": "ve",
+    "capital": "Caracas",
+    "difficulty": 2,
+    "latlng": [
+      8.0,
+      -66.0
+    ]
+  },
+  {
+    "name": "Vietnam",
+    "code": "vn",
+    "capital": "Hanoi",
+    "difficulty": 1,
+    "latlng": [
+      16.16666666,
+      107.83333333
+    ]
+  },
+  {
+    "name": "Wallis and Futuna",
+    "code": "wf",
+    "capital": "Mata-Utu",
+    "difficulty": 3,
+    "latlng": [
+      -13.3,
+      -176.2
+    ]
+  },
+  {
+    "name": "Western Sahara",
+    "code": "eh",
+    "capital": "El Aai\u00fan",
+    "difficulty": 2,
+    "latlng": [
+      24.5,
+      -13.0
+    ]
+  },
+  {
+    "name": "Yemen",
+    "code": "ye",
+    "capital": "Sana'a",
+    "difficulty": 2,
+    "latlng": [
+      15.0,
+      48.0
+    ]
+  },
+  {
+    "name": "Zambia",
+    "code": "zm",
+    "capital": "Lusaka",
+    "difficulty": 2,
+    "latlng": [
+      -15.0,
+      30.0
+    ]
+  },
+  {
+    "name": "Zimbabwe",
+    "code": "zw",
+    "capital": "Harare",
+    "difficulty": 2,
+    "latlng": [
+      -20.0,
+      30.0
+    ]
+  },
+  {
+    "name": "\u00c5land Islands",
+    "code": "ax",
+    "capital": "Mariehamn",
+    "difficulty": 3,
+    "latlng": [
+      60.116667,
+      19.9
+    ]
+  }
 ]
