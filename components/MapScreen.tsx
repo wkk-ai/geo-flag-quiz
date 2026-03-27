@@ -9,7 +9,8 @@ import { geoCentroid, geoBounds } from "d3-geo";
 
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
-const geoUrl = "/maps/world-50m.json";
+const BASE_PATH = "/geo-flag-quiz";
+const geoUrl = `${BASE_PATH}/maps/world-50m.json`;
 
 type AnswerState = "idle" | "both-correct" | "wrong";
 

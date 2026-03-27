@@ -14,7 +14,6 @@ import { geoCentroid, geoBounds } from "d3-geo";
 
 countries.registerLocale(enLocale);
 
-const geoUrl = "/maps/world-50m.json";
 
 interface Props {
   targetCode: string;
