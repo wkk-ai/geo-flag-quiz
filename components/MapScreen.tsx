@@ -5,9 +5,10 @@ import { MainMap, MiniMap } from "./InteractiveMap";
 import { Flag } from "@/lib/gameLogic";
 import countries from "i18n-iso-countries";
 import { feature } from "topojson-client";
+import enLocale from "i18n-iso-countries/langs/en.json";
 import { geoCentroid, geoBounds } from "d3-geo";
 
-countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(enLocale);
 
 const BASE_PATH = "/geo-flag-quiz";
 const geoUrl = `${BASE_PATH}/maps/world-50m.json`;
@@ -42,6 +43,7 @@ export default function MapScreen({
   // Map State
   const [position, setPosition] = useState({ center: [0, 0] as [number, number], zoom: 1 });
   const [isTiny, setIsTiny] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [geographies, setGeographies] = useState<any[]>([]);
 
   const targetNumeric = useMemo(() => {
@@ -54,6 +56,7 @@ export default function MapScreen({
     fetch(geoUrl)
       .then((res) => res.json())
       .then((data) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const countriesFeature = feature(data, data.objects.countries) as any;
         setGeographies(countriesFeature.features);
       });
@@ -67,11 +70,15 @@ export default function MapScreen({
   useEffect(() => {
     if (!targetFeature) {
       if (country.latlng) {
-        setPosition({ center: [country.latlng[1], country.latlng[0]], zoom: 35 });
-        setIsTiny(true);
+        setTimeout(() => {
+          setPosition({ center: [country.latlng![1], country.latlng![0]], zoom: 35 });
+          setIsTiny(true);
+        }, 0);
       } else {
-        setPosition({ center: [0, 0], zoom: 1 });
-        setIsTiny(false);
+        setTimeout(() => {
+          setPosition({ center: [0, 0], zoom: 1 });
+          setIsTiny(false);
+        }, 0);
       }
       return;
     }
@@ -88,8 +95,10 @@ export default function MapScreen({
       calculatedZoom = Math.max(1.5, Math.min(40, 50 / maxDim));
     }
 
-    setPosition({ center: centroid as [number, number], zoom: calculatedZoom });
-    setIsTiny(isActuallyTiny);
+    setTimeout(() => {
+      setPosition({ center: centroid as [number, number], zoom: calculatedZoom });
+      setIsTiny(isActuallyTiny);
+    }, 0);
   }, [targetFeature, country.latlng, country.code]);
 
   return (

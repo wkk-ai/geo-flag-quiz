@@ -1,25 +1,9 @@
-"use client";
-
-import { useEffect, useState, useMemo } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
-import { feature } from "topojson-client";
-import countries from "i18n-iso-countries";
-import enLocale from "i18n-iso-countries/langs/en.json";
-import { geoCentroid, geoBounds } from "d3-geo";
-
-countries.registerLocale(enLocale);
-
-
-interface Props {
-  targetCode: string;
-  isAnswered: boolean;
-  fallbackLatLng?: [number, number];
-}
 
 interface MapProps {
   targetCode: string; // ISO alpha-2
@@ -27,6 +11,7 @@ interface MapProps {
   fallbackLatLng?: [number, number]; // [lat, lng] from flags.json
   position: { center: [number, number]; zoom: number };
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   geographies: any[];
   targetNumeric: string | null;
   isTiny: boolean;
@@ -74,12 +59,15 @@ export function MainMap({
         <ZoomableGroup 
           center={position.center} 
           zoom={position.zoom} 
-          onMoveEnd={(pos) => setPosition({ center: pos.coordinates, zoom: pos.zoom })}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onMoveEnd={(pos: any) => setPosition({ center: pos.coordinates, zoom: pos.zoom })}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           filterZoomEvent={(e: any) => e.type !== "wheel" && e.type !== "dblclick"}
         >
           <Geographies geography={geographies}>
             {({ geographies }) =>
-              geographies.map((geo) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              geographies.map((geo: any) => {
                 const isTarget = String(geo.id).padStart(3, "0") === targetNumeric;
                 return (
                   <Geography
@@ -149,6 +137,7 @@ export function MiniMap({
   isTiny 
 }: { 
   position: { center: [number, number]; zoom: number }; 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   geographies: any[]; 
   isTiny: boolean;
 }) {
@@ -198,7 +187,7 @@ export function MiniMap({
 
 }
 
-export default function InteractiveMap({ targetCode, isAnswered, fallbackLatLng }: Props) {
+export default function InteractiveMap() {
   // This wrapper is no longer used directly in the side-by-side layout, 
   // but kept for compatibility or handled in MapScreen.
   return null; 
