@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { withBase } from "@/lib/paths";
 
-const VERSION_KEY = "geo-quiz-offline-v1";
+const VERSION_KEY = "geo-quiz-offline-v2";
 
 type Assets = { version: string; urls: string[] };
 

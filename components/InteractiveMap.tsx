@@ -3,6 +3,7 @@ import {
   Geographies,
   Geography,
   Marker,
+  Sphere,
   ZoomableGroup,
 } from "react-simple-maps";
 
@@ -11,6 +12,12 @@ const LAND = "#94a3b8";
 const LAND_STROKE = "#cbd5e1";
 const TARGET = "#38bdf8";
 const TARGET_STROKE = "#e0f2fe";
+const MAIN_W = 800;
+const MAIN_H = 500;
+const MAIN_SCALE = 140;
+const MINI_W = 300;
+const MINI_H = 225;
+const MINI_SCALE = 108;
 
 interface MapProps {
   isAnswered: boolean;
@@ -86,9 +93,9 @@ export function MainMap({
       `}</style>
 
       <ComposableMap
-        projectionConfig={{ scale: 140 }}
-        width={800}
-        height={500}
+        projectionConfig={{ scale: MAIN_SCALE }}
+        width={MAIN_W}
+        height={MAIN_H}
         style={{ width: "100%", height: "100%" }}
       >
         <ZoomableGroup
@@ -177,11 +184,14 @@ export function MiniMap({
         <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">World view</span>
       </div>
       <ComposableMap
-        projectionConfig={{ scale: 55, center: [0, 0] }}
-        width={300}
-        height={225}
+        key={`${pin[0].toFixed(2)},${pin[1].toFixed(2)}`}
+        projection="geoOrthographic"
+        projectionConfig={{ scale: MINI_SCALE, rotate: [-pin[0], -pin[1], 0] }}
+        width={MINI_W}
+        height={MINI_H}
         style={{ width: "100%", height: "100%" }}
       >
+        <Sphere id="world-view-sphere" fill="#0c3a52" stroke={LAND_STROKE} strokeWidth={0.5} />
         <Geographies geography={geographies}>
           {({ geographies }) =>
             geographies.map((geo) => (
@@ -196,8 +206,8 @@ export function MiniMap({
           }
         </Geographies>
         <Marker coordinates={pin}>
-          <circle r={11} fill={TARGET} fillOpacity={0.25} />
-          <circle r={5.5} fill={TARGET} stroke={TARGET_STROKE} strokeWidth={1.4} />
+          <circle r={12} fill={TARGET} fillOpacity={0.22} />
+          <circle r={5} fill={TARGET} stroke={TARGET_STROKE} strokeWidth={1.6} />
         </Marker>
       </ComposableMap>
     </div>
