@@ -87,20 +87,28 @@ export default function MapScreen({
     [geographies, targetNumeric]
   );
 
+  const pin = useMemo<[number, number]>(() => {
+    if (targetFeature) return geoCentroid(targetFeature) as [number, number];
+    if (country.latlng) return [country.latlng[1], country.latlng[0]];
+    return [0, 0];
+  }, [targetFeature, country.latlng]);
+
   const fitted = useMemo(() => {
+    const fallback = country.latlng
+      ? ([country.latlng[1], country.latlng[0]] as [number, number])
+      : ([0, 0] as [number, number]);
     if (!targetFeature) {
-      if (country.latlng) {
-        return { center: [country.latlng[1], country.latlng[0]] as [number, number], zoom: 35, isTiny: true };
-      }
-      return { center: [0, 0] as [number, number], zoom: 1, isTiny: false };
+      return { center: fallback, zoom: 5, isTiny: true };
     }
     const centroid = geoCentroid(targetFeature) as [number, number];
     const bounds = geoBounds(targetFeature);
     const dx = bounds[1][0] - bounds[0][0];
     const dy = bounds[1][1] - bounds[0][1];
     const maxDim = Math.max(dx, dy);
-    const zoom = maxDim > 0 ? Math.max(1.5, Math.min(40, 50 / maxDim)) : 1;
-    return { center: centroid, zoom, isTiny: maxDim < 0.8 };
+    const tiny = !Number.isFinite(maxDim) || maxDim < 4;
+    const viewSpan = Math.max(maxDim * 1.4, tiny ? 18 : maxDim);
+    const zoom = viewSpan > 0 ? Math.max(1.5, Math.min(8, 50 / viewSpan)) : 1.5;
+    return { center: centroid, zoom, isTiny: tiny };
   }, [targetFeature, country.latlng]);
 
   const position = {
@@ -160,19 +168,18 @@ export default function MapScreen({
               </div>
             )}
             <MainMap
-              targetCode={country.code}
               isAnswered={isAnswered}
-              fallbackLatLng={country.latlng}
+              pin={pin}
               position={position}
               setPosition={setPosition}
               geographies={geographies}
               targetNumeric={targetNumeric}
-              isTiny={isTiny}
+              showPin={isTiny}
             />
           </div>
 
-          <div className="hidden lg:flex flex-1 min-w-[280px] flex-col gap-4">
-            <MiniMap position={position} geographies={geographies} isTiny={isTiny} />
+          <div className="w-full lg:flex-1 lg:min-w-[280px] flex flex-col gap-4">
+            <MiniMap pin={pin} geographies={geographies} />
           </div>
         </div>
 

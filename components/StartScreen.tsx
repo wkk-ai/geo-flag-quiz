@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { Difficulty } from "@/lib/gameLogic";
+import { RegionId, REGION_OPTIONS } from "@/lib/regions";
 import { OfflineHint } from "@/components/PwaRegistration";
 
 export type GameMode = "flag" | "map";
 
 interface Props {
-  onStart: (mode: GameMode, difficulty: Difficulty) => void;
+  onStart: (mode: GameMode, difficulty: Difficulty, region: RegionId) => void;
   bestScore: number;
   bestStreak: number;
 }
@@ -35,6 +36,7 @@ const modes: { id: GameMode; label: string; desc: string; icon: string }[] = [
 
 export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<RegionId | null>(null);
 
   if (!selectedMode) {
     return (
@@ -101,6 +103,51 @@ export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
     );
   }
 
+  if (!selectedRegion) {
+    return (
+      <main
+        id="main"
+        className="flex flex-col items-center justify-center min-h-screen px-4 py-10 bg-slate-950 text-slate-100"
+      >
+        <div className="w-full max-w-md text-center">
+          <div className="mb-8 pt-2">
+            <div className="text-7xl mb-4" aria-hidden="true">
+              {selectedMode === "flag" ? "🚩" : "🗺️"}
+            </div>
+            <h1 className="text-4xl font-black text-white mb-2 tracking-tight text-balance">
+              {selectedMode === "flag" ? "Flag Quiz" : "Map Quiz"}
+            </h1>
+            <p className="text-slate-400 text-sm">Where in the world?</p>
+          </div>
+
+          <div className="px-5 py-7 rounded-3xl bg-white/[0.03] border border-white/10">
+            <div className="flex flex-col gap-3">
+              {REGION_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => setSelectedRegion(opt.id)}
+                  className="w-full text-left px-5 py-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 active:scale-[0.98] transition-[transform,background-color,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                >
+                  <span className="block font-bold text-white text-lg tracking-tight">{opt.label}</span>
+                  <span className="block text-xs text-slate-400 mt-1 leading-relaxed">{opt.desc}</span>
+                </button>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setSelectedMode(null)}
+                className="mt-4 min-h-11 text-sm font-semibold text-slate-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-xl"
+              >
+                ← Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main
       id="main"
@@ -123,7 +170,7 @@ export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => onStart(selectedMode, opt.value)}
+                onClick={() => onStart(selectedMode, opt.value, selectedRegion)}
                 className="w-full text-left px-5 py-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 active:scale-[0.98] transition-[transform,background-color,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
                 <span className="block font-bold text-white text-lg tracking-tight">{opt.label}</span>
@@ -133,7 +180,7 @@ export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
 
             <button
               type="button"
-              onClick={() => setSelectedMode(null)}
+              onClick={() => setSelectedRegion(null)}
               className="mt-4 min-h-11 text-sm font-semibold text-slate-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-xl"
             >
               ← Back

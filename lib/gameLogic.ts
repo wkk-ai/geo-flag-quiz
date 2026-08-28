@@ -1,4 +1,5 @@
 import flags from "@/data/flags.json";
+import { RegionId, assertRegionsCover, inRegion } from "@/lib/regions";
 
 export type Difficulty = 1 | 2 | 3; // 1=Easy 2=Medium 3=Hard
 
@@ -19,6 +20,7 @@ export const CAPITAL_PTS = 50;
 export const MAP_PTS = 100;
 
 const allFlags: Flag[] = flags as Flag[];
+assertRegionsCover(allFlags.map((f) => f.code));
 
 export const TIER_LABELS: Record<Difficulty, string> = {
   1: "Easy",
@@ -34,11 +36,17 @@ export function pointsFor(base: number, streakAfter: number): number {
   return Math.round(base * streakMultiplier(streakAfter));
 }
 
-export function getFlagsByDifficulty(difficulty: Difficulty, excludeCode?: string): Flag[] {
-  const pool = allFlags.filter(
-    (f) => f.difficulty === difficulty && f.code !== excludeCode
-  );
-  return shuffle(pool.length > 0 ? pool : allFlags.filter((f) => f.code !== excludeCode));
+export function getFlagsByDifficulty(
+  difficulty: Difficulty,
+  excludeCode?: string,
+  region: RegionId = "world"
+): Flag[] {
+  const inPool = (f: Flag) => f.code !== excludeCode && inRegion(f.code, region);
+  const sameTier = allFlags.filter((f) => f.difficulty === difficulty && inPool(f));
+  if (sameTier.length > 0) return shuffle(sameTier);
+  const sameRegion = allFlags.filter(inPool);
+  if (sameRegion.length > 0) return shuffle(sameRegion);
+  return shuffle(allFlags.filter((f) => f.code !== excludeCode));
 }
 
 function geoDist2(a: Flag, b: Flag): number {
@@ -49,16 +57,21 @@ function geoDist2(a: Flag, b: Flag): number {
 }
 
 /** 4 options: correct + 3 same-difficulty. Map mode prefers nearby countries. */
-export function generateCountryOptions(correct: Flag, nearby = false): Flag[] {
-  return pickOptions(correct, nearby);
+export function generateCountryOptions(
+  correct: Flag,
+  nearby = false,
+  region: RegionId = "world"
+): Flag[] {
+  return pickOptions(correct, nearby, region);
 }
 
-export function generateCapitalOptions(correct: Flag): Flag[] {
-  return pickOptions(correct, false);
+export function generateCapitalOptions(correct: Flag, region: RegionId = "world"): Flag[] {
+  return pickOptions(correct, false, region);
 }
 
-function pickOptions(correct: Flag, nearby: boolean): Flag[] {
-  const pool = allFlags.filter((f) => f.code !== correct.code);
+function pickOptions(correct: Flag, nearby: boolean, region: RegionId): Flag[] {
+  const regional = allFlags.filter((f) => f.code !== correct.code && inRegion(f.code, region));
+  const pool = regional.length >= 3 ? regional : allFlags.filter((f) => f.code !== correct.code);
   const same = pool.filter((f) => f.difficulty === correct.difficulty);
   const rest = pool.filter((f) => f.difficulty !== correct.difficulty);
   const byNear = (list: Flag[]) =>

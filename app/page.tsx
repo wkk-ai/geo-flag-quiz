@@ -20,6 +20,7 @@ import {
   generateCapitalOptions,
   pointsFor,
 } from "@/lib/gameLogic";
+import { RegionId, REGION_LABELS } from "@/lib/regions";
 import {
   saveStats,
   saveBests,
@@ -35,35 +36,37 @@ type Phase = "start" | "playing" | "over";
 interface GameState {
   gameMode: GameMode;
   difficulty: Difficulty;
+  region: RegionId;
   bucket: Flag[];
   currentFlag: Flag;
   countryOptions: Flag[];
   capitalOptions: Flag[];
 }
 
-function buildInitialGameState(mode: GameMode, difficulty: Difficulty): GameState {
-  const bucket = getFlagsByDifficulty(difficulty);
+function buildInitialGameState(mode: GameMode, difficulty: Difficulty, region: RegionId): GameState {
+  const bucket = getFlagsByDifficulty(difficulty, undefined, region);
   const current = bucket[0];
   return {
     gameMode: mode,
     difficulty,
+    region,
     bucket: bucket.slice(1),
     currentFlag: current,
-    countryOptions: generateCountryOptions(current, mode === "map"),
-    capitalOptions: generateCapitalOptions(current),
+    countryOptions: generateCountryOptions(current, mode === "map", region),
+    capitalOptions: generateCapitalOptions(current, region),
   };
 }
 
 function nextQuestion(state: GameState): GameState {
   if (state.bucket.length === 0) {
-    const newBucket = getFlagsByDifficulty(state.difficulty, state.currentFlag.code);
+    const newBucket = getFlagsByDifficulty(state.difficulty, state.currentFlag.code, state.region);
     const current = newBucket[0];
     return {
       ...state,
       bucket: newBucket.slice(1),
       currentFlag: current,
-      countryOptions: generateCountryOptions(current, state.gameMode === "map"),
-      capitalOptions: generateCapitalOptions(current),
+      countryOptions: generateCountryOptions(current, state.gameMode === "map", state.region),
+      capitalOptions: generateCapitalOptions(current, state.region),
     };
   }
   const current = state.bucket[0];
@@ -71,8 +74,8 @@ function nextQuestion(state: GameState): GameState {
     ...state,
     bucket: state.bucket.slice(1),
     currentFlag: current,
-    countryOptions: generateCountryOptions(current, state.gameMode === "map"),
-    capitalOptions: generateCapitalOptions(current),
+    countryOptions: generateCountryOptions(current, state.gameMode === "map", state.region),
+    capitalOptions: generateCapitalOptions(current, state.region),
   };
 }
 
@@ -108,9 +111,9 @@ export default function Home() {
     setBestStreakThisRun((s) => Math.max(s, next));
   }, []);
 
-  const handleStart = useCallback((mode: GameMode, difficulty: Difficulty) => {
+  const handleStart = useCallback((mode: GameMode, difficulty: Difficulty, region: RegionId) => {
     unlockAudio();
-    setGameState(buildInitialGameState(mode, difficulty));
+    setGameState(buildInitialGameState(mode, difficulty, region));
     setPhase("playing");
     setAnswerState("idle");
     setFlagStep("country");
@@ -285,7 +288,7 @@ export default function Home() {
         newBestScore={newBestScore}
         onPlayAgain={() => {
           if (!gameState) return;
-          handleStart(gameState.gameMode, gameState.difficulty);
+          handleStart(gameState.gameMode, gameState.difficulty, gameState.region);
         }}
         onHome={() => {
           setPhase("start");
@@ -305,7 +308,7 @@ export default function Home() {
           country={gameState.currentFlag}
           countryOptions={gameState.countryOptions}
           streak={streak}
-          tier={TIER_LABELS[gameState.difficulty]}
+          tier={`${REGION_LABELS[gameState.region]} · ${TIER_LABELS[gameState.difficulty]}`}
           answerState={answerState}
           selectedCountry={selectedCountry}
           onSelectCountry={handleSelectCountry}
@@ -324,7 +327,7 @@ export default function Home() {
         countryOptions={gameState.countryOptions}
         capitalOptions={gameState.capitalOptions}
         streak={streak}
-        tier={TIER_LABELS[gameState.difficulty]}
+        tier={`${REGION_LABELS[gameState.region]} · ${TIER_LABELS[gameState.difficulty]}`}
         answerState={answerState}
         flagStep={flagStep}
         selectedCountry={selectedCountry}

@@ -2,31 +2,60 @@ import {
   ComposableMap,
   Geographies,
   Geography,
+  Marker,
   ZoomableGroup,
 } from "react-simple-maps";
 
+const MAX_ZOOM = 16;
+const LAND = "#94a3b8";
+const LAND_STROKE = "#cbd5e1";
+const TARGET = "#38bdf8";
+const TARGET_STROKE = "#e0f2fe";
+
 interface MapProps {
-  targetCode: string;
   isAnswered: boolean;
-  fallbackLatLng?: [number, number];
+  pin: [number, number];
   position: { center: [number, number]; zoom: number };
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   geographies: any[];
   targetNumeric: string | null;
-  isTiny: boolean;
+  showPin: boolean;
+}
+
+function Pin({
+  pin,
+  zoom,
+  pulse,
+}: {
+  pin: [number, number];
+  zoom: number;
+  pulse: boolean;
+}) {
+  const core = Math.max(2.4, 12 / zoom);
+  const glow = Math.max(5, 20 / zoom);
+  const stroke = Math.max(0.4, 2 / zoom);
+  return (
+    <Marker coordinates={pin} style={{ default: { pointerEvents: "none" } }}>
+      {pulse && (
+        <circle r={glow} fill={TARGET} fillOpacity={0.28} className="pulse-marker" />
+      )}
+      <circle r={core} fill={TARGET} stroke={TARGET_STROKE} strokeWidth={stroke} />
+    </Marker>
+  );
 }
 
 export function MainMap({
+  pin,
   position,
   setPosition,
   geographies,
   targetNumeric,
-  isTiny,
+  showPin,
   isAnswered,
 }: MapProps) {
   const handleZoomIn = () => {
-    setPosition({ ...position, zoom: Math.min(position.zoom * 1.5, 100) });
+    setPosition({ ...position, zoom: Math.min(position.zoom * 1.5, MAX_ZOOM) });
   };
 
   const handleZoomOut = () => {
@@ -35,25 +64,24 @@ export function MainMap({
 
   return (
     <div
-      className="relative w-full min-h-[42vh] aspect-[4/3] md:aspect-[2.2/1] bg-slate-950 rounded-[2rem] overflow-hidden border border-white/10"
+      className="relative w-full min-h-[42vh] aspect-[4/3] md:aspect-[2.2/1] rounded-[2rem] overflow-hidden border border-white/10"
+      style={{ background: "#123047" }}
       role="img"
       aria-label="World map. The highlighted country is the question."
     >
       <style jsx global>{`
         @keyframes map-pulse {
-          0% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 2px #3b82f6); }
-          50% { transform: scale(1.5); opacity: 0.4; filter: drop-shadow(0 0 8px #3b82f6); }
-          100% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 2px #3b82f6); }
+          0%, 100% { opacity: 0.55; }
+          50% { opacity: 0.18; }
         }
         .pulse-marker {
           animation: map-pulse 2s infinite ease-in-out;
-          transform-origin: center;
         }
         @media (prefers-reduced-motion: reduce) {
           .pulse-marker { animation: none; }
         }
         .target-glow {
-          filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+          filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.85));
         }
       `}</style>
 
@@ -66,6 +94,8 @@ export function MainMap({
         <ZoomableGroup
           center={position.center}
           zoom={position.zoom}
+          minZoom={1}
+          maxZoom={MAX_ZOOM}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onMoveEnd={(pos: any) => setPosition({ center: pos.coordinates, zoom: pos.zoom })}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,13 +110,13 @@ export function MainMap({
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={isTarget ? "#3b82f6" : "#1e293b"}
-                    stroke={isTarget ? "#60a5fa" : "#334155"}
-                    strokeWidth={isTarget ? 0.8 / position.zoom : 0.4 / position.zoom}
+                    fill={isTarget ? TARGET : LAND}
+                    stroke={isTarget ? TARGET_STROKE : LAND_STROKE}
+                    strokeWidth={isTarget ? Math.max(0.5, 1.4 / position.zoom) : 0.35 / position.zoom}
                     className={isTarget ? "target-glow" : ""}
                     style={{
                       default: { outline: "none" },
-                      hover: { outline: "none", fill: isTarget ? "#60a5fa" : "#1e293b" },
+                      hover: { outline: "none", fill: isTarget ? TARGET_STROKE : LAND },
                       pressed: { outline: "none" },
                     }}
                     tabIndex={-1}
@@ -97,12 +127,7 @@ export function MainMap({
             }
           </Geographies>
 
-          {targetNumeric && isTiny && !isAnswered && (
-            <g transform={`translate(${position.center[0]}, ${position.center[1]})`}>
-              <circle r={8 / position.zoom} fill="#3b82f6" className="pulse-marker" />
-              <circle r={3 / position.zoom} fill="#3b82f6" />
-            </g>
-          )}
+          {showPin && <Pin pin={pin} zoom={position.zoom} pulse={!isAnswered} />}
         </ZoomableGroup>
       </ComposableMap>
 
@@ -125,9 +150,9 @@ export function MainMap({
         </button>
       </div>
 
-      {!isAnswered && isTiny && (
-        <div className="absolute top-4 left-4 bg-blue-600/20 border border-blue-500/30 text-blue-300 text-[11px] font-semibold px-3 py-1.5 rounded-lg">
-          Small country — look for the glow
+      {!isAnswered && showPin && (
+        <div className="absolute top-4 left-4 bg-sky-500/20 border border-sky-400/30 text-sky-200 text-[11px] font-semibold px-3 py-1.5 rounded-lg">
+          Small country — look for the blue pin
         </div>
       )}
     </div>
@@ -135,30 +160,24 @@ export function MainMap({
 }
 
 export function MiniMap({
-  position,
+  pin,
   geographies,
-  isTiny,
 }: {
-  position: { center: [number, number]; zoom: number };
+  pin: [number, number];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   geographies: any[];
-  isTiny: boolean;
 }) {
-  const miniMapScale = isTiny ? 140 : 45;
-
   return (
     <div
-      className="w-full aspect-[1.8/1] bg-slate-900 rounded-[2rem] overflow-hidden border border-white/10 pointer-events-none relative"
+      className="w-full h-40 lg:h-auto lg:aspect-[1.8/1] rounded-[2rem] overflow-hidden border border-white/10 pointer-events-none relative"
+      style={{ background: "#123047" }}
       aria-hidden="true"
     >
       <div className="absolute top-4 left-4 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 z-10">
         <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">World view</span>
       </div>
       <ComposableMap
-        projectionConfig={{
-          scale: miniMapScale,
-          center: isTiny ? position.center : [0, 0],
-        }}
+        projectionConfig={{ scale: 55, center: [0, 0] }}
         width={300}
         height={225}
         style={{ width: "100%", height: "100%" }}
@@ -169,23 +188,17 @@ export function MiniMap({
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
-                fill="#1e293b"
-                stroke="#334155"
-                strokeWidth={0.2}
+                fill={LAND}
+                stroke={LAND_STROKE}
+                strokeWidth={0.3}
               />
             ))
           }
         </Geographies>
-        <rect
-          x={150 + position.center[0] * (miniMapScale / 100)}
-          y={112.5 - position.center[1] * (miniMapScale / 100)}
-          width={Math.max(10, 45 / position.zoom)}
-          height={Math.max(10, 30 / position.zoom)}
-          fill="rgba(59, 130, 246, 0.15)"
-          stroke="#3b82f6"
-          strokeWidth={1.2}
-          transform={`translate(${-Math.max(5, 22.5 / position.zoom)}, ${-Math.max(5, 15 / position.zoom)})`}
-        />
+        <Marker coordinates={pin}>
+          <circle r={11} fill={TARGET} fillOpacity={0.25} />
+          <circle r={5.5} fill={TARGET} stroke={TARGET_STROKE} strokeWidth={1.4} />
+        </Marker>
       </ComposableMap>
     </div>
   );
