@@ -6,9 +6,9 @@ import {
 } from "react-simple-maps";
 
 interface MapProps {
-  targetCode: string; // ISO alpha-2
+  targetCode: string;
   isAnswered: boolean;
-  fallbackLatLng?: [number, number]; // [lat, lng] from flags.json
+  fallbackLatLng?: [number, number];
   position: { center: [number, number]; zoom: number };
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,13 +17,13 @@ interface MapProps {
   isTiny: boolean;
 }
 
-export function MainMap({ 
-  position, 
-  setPosition, 
-  geographies, 
-  targetNumeric, 
-  isTiny, 
-  isAnswered 
+export function MainMap({
+  position,
+  setPosition,
+  geographies,
+  targetNumeric,
+  isTiny,
+  isAnswered,
 }: MapProps) {
   const handleZoomIn = () => {
     setPosition({ ...position, zoom: Math.min(position.zoom * 1.5, 100) });
@@ -34,7 +34,11 @@ export function MainMap({
   };
 
   return (
-    <div className="relative w-full aspect-[2.4/1] bg-slate-950 rounded-[2rem] overflow-hidden border border-white/5 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] transition-all duration-500 ring-1 ring-white/10">
+    <div
+      className="relative w-full min-h-[42vh] aspect-[4/3] md:aspect-[2.2/1] bg-slate-950 rounded-[2rem] overflow-hidden border border-white/10"
+      role="img"
+      aria-label="World map. The highlighted country is the question."
+    >
       <style jsx global>{`
         @keyframes map-pulse {
           0% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 2px #3b82f6); }
@@ -44,6 +48,9 @@ export function MainMap({
         .pulse-marker {
           animation: map-pulse 2s infinite ease-in-out;
           transform-origin: center;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pulse-marker { animation: none; }
         }
         .target-glow {
           filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
@@ -56,9 +63,9 @@ export function MainMap({
         height={500}
         style={{ width: "100%", height: "100%" }}
       >
-        <ZoomableGroup 
-          center={position.center} 
-          zoom={position.zoom} 
+        <ZoomableGroup
+          center={position.center}
+          zoom={position.zoom}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onMoveEnd={(pos: any) => setPosition({ center: pos.coordinates, zoom: pos.zoom })}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,10 +85,12 @@ export function MainMap({
                     strokeWidth={isTarget ? 0.8 / position.zoom : 0.4 / position.zoom}
                     className={isTarget ? "target-glow" : ""}
                     style={{
-                      default: { outline: "none", transition: "all 300ms" },
-                      hover: { outline: "none", fill: isTarget ? "#60a5fa" : "#334155" },
+                      default: { outline: "none" },
+                      hover: { outline: "none", fill: isTarget ? "#60a5fa" : "#1e293b" },
                       pressed: { outline: "none" },
                     }}
+                    tabIndex={-1}
+                    focusable={false}
                   />
                 );
               })
@@ -97,61 +106,58 @@ export function MainMap({
         </ZoomableGroup>
       </ComposableMap>
 
-      {/* Zoom Controls - Glassmorphism */}
-      <div className="absolute bottom-6 left-6 flex flex-col gap-3 z-10">
-        <button 
+      <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
+        <button
+          type="button"
           onClick={handleZoomIn}
-          className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-all font-bold text-2xl select-none"
+          aria-label="Zoom in"
+          className="w-11 h-11 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-[transform,background-color] font-bold text-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
         >
           +
         </button>
-        <button 
+        <button
+          type="button"
           onClick={handleZoomOut}
-          className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-all font-bold text-2xl select-none"
+          aria-label="Zoom out"
+          className="w-11 h-11 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/20 active:scale-95 transition-[transform,background-color] font-bold text-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
         >
           −
         </button>
       </div>
 
-      {!isAnswered && (
-        <div className="absolute top-6 left-6 flex flex-col gap-2 focus:pointer-events-none select-none">
-          <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 text-white text-[10px] font-black underline-offset-4 decoration-blue-500/50 underline px-3.5 py-2 rounded-xl uppercase tracking-[0.2em] w-fit shadow-2xl">
-            Target Region
-          </div>
-          {isTiny && (
-            <div className="bg-blue-600/20 backdrop-blur-xl border border-blue-500/30 text-blue-400 text-[10px] font-black px-3.5 py-2 rounded-xl uppercase tracking-[0.2em] w-fit flex items-center gap-2 shadow-2xl transition-all">
-              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
-              Small Location
-            </div>
-          )}
+      {!isAnswered && isTiny && (
+        <div className="absolute top-4 left-4 bg-blue-600/20 border border-blue-500/30 text-blue-300 text-[11px] font-semibold px-3 py-1.5 rounded-lg">
+          Small country — look for the glow
         </div>
       )}
     </div>
   );
-
 }
 
-export function MiniMap({ 
-  position, 
-  geographies, 
-  isTiny 
-}: { 
-  position: { center: [number, number]; zoom: number }; 
+export function MiniMap({
+  position,
+  geographies,
+  isTiny,
+}: {
+  position: { center: [number, number]; zoom: number };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  geographies: any[]; 
+  geographies: any[];
   isTiny: boolean;
 }) {
   const miniMapScale = isTiny ? 140 : 45;
 
   return (
-    <div className="w-full aspect-[1.8/1] bg-slate-900 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl pointer-events-none relative transition-all duration-700 ease-in-out ring-1 ring-white/10">
-      <div className="absolute top-4 left-4 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 z-10">
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Context Map</span>
+    <div
+      className="w-full aspect-[1.8/1] bg-slate-900 rounded-[2rem] overflow-hidden border border-white/10 pointer-events-none relative"
+      aria-hidden="true"
+    >
+      <div className="absolute top-4 left-4 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 z-10">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">World view</span>
       </div>
       <ComposableMap
-        projectionConfig={{ 
+        projectionConfig={{
           scale: miniMapScale,
-          center: isTiny ? position.center : [0, 0]
+          center: isTiny ? position.center : [0, 0],
         }}
         width={300}
         height={225}
@@ -171,24 +177,16 @@ export function MiniMap({
           }
         </Geographies>
         <rect
-          x={150 + position.center[0] * (miniMapScale/100)} 
-          y={112.5 - position.center[1] * (miniMapScale/100)}
+          x={150 + position.center[0] * (miniMapScale / 100)}
+          y={112.5 - position.center[1] * (miniMapScale / 100)}
           width={Math.max(10, 45 / position.zoom)}
           height={Math.max(10, 30 / position.zoom)}
           fill="rgba(59, 130, 246, 0.15)"
           stroke="#3b82f6"
           strokeWidth={1.2}
-          transform={`translate(${-Math.max(5, 22.5/position.zoom)}, ${-Math.max(5, 15/position.zoom)})`}
-          className="transition-all duration-500"
+          transform={`translate(${-Math.max(5, 22.5 / position.zoom)}, ${-Math.max(5, 15 / position.zoom)})`}
         />
       </ComposableMap>
     </div>
   );
-
-}
-
-export default function InteractiveMap() {
-  // This wrapper is no longer used directly in the side-by-side layout, 
-  // but kept for compatibility or handled in MapScreen.
-  return null; 
 }

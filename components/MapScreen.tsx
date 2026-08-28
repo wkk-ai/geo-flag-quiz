@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { MainMap, MiniMap } from "./InteractiveMap";
-import { Flag } from "@/lib/gameLogic";
+import Hud from "./Hud";
+import { AnswerState, Flag } from "@/lib/gameLogic";
+import { optionClass } from "@/lib/optionClass";
 import countries from "i18n-iso-countries";
 import { feature } from "topojson-client";
 import enLocale from "i18n-iso-countries/langs/en.json";
@@ -13,8 +15,6 @@ countries.registerLocale(enLocale);
 const BASE_PATH = "/geo-flag-quiz";
 const geoUrl = `${BASE_PATH}/maps/world-50m.json`;
 
-type AnswerState = "idle" | "both-correct" | "wrong";
-
 interface Props {
   country: Flag;
   countryOptions: Flag[];
@@ -22,9 +22,15 @@ interface Props {
   tier: string;
   answerState: AnswerState;
   selectedCountry: string | null;
+  lives: number;
+  score: number;
+  bestScore: number;
+  lastDelta: number | null;
+  muted: boolean;
   onSelectCountry: (code: string) => void;
   onNext: () => void;
   onHome: () => void;
+  onToggleMute: () => void;
 }
 
 export default function MapScreen({
@@ -34,17 +40,26 @@ export default function MapScreen({
   tier,
   answerState,
   selectedCountry,
+  lives,
+  score,
+  bestScore,
+  lastDelta,
+  muted,
   onSelectCountry,
   onNext,
   onHome,
+  onToggleMute,
 }: Props) {
   const isAnswered = answerState !== "idle";
-  
-  // Map State
-  const [position, setPosition] = useState({ center: [0, 0] as [number, number], zoom: 1 });
-  const [isTiny, setIsTiny] = useState(false);
+  const [mapError, setMapError] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [geographies, setGeographies] = useState<any[]>([]);
+  const [override, setOverride] = useState<{
+    code: string;
+    center: [number, number];
+    zoom: number;
+  } | null>(null);
+  const mapReady = geographies.length > 0;
 
   const targetNumeric = useMemo(() => {
     const num = countries.alpha2ToNumeric(country.code.toUpperCase());
@@ -54,80 +69,97 @@ export default function MapScreen({
 
   useEffect(() => {
     fetch(geoUrl)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("map");
+        return res.json();
+      })
       .then((data) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const countriesFeature = feature(data, data.objects.countries) as any;
         setGeographies(countriesFeature.features);
-      });
+        setMapError(false);
+      })
+      .catch(() => setMapError(true));
   }, []);
 
-  const targetFeature = useMemo(() => 
-    geographies.find((geo) => String(geo.id).padStart(3, "0") === targetNumeric), 
+  const targetFeature = useMemo(
+    () => geographies.find((geo) => String(geo.id).padStart(3, "0") === targetNumeric),
     [geographies, targetNumeric]
   );
 
-  useEffect(() => {
+  const fitted = useMemo(() => {
     if (!targetFeature) {
       if (country.latlng) {
-        setTimeout(() => {
-          setPosition({ center: [country.latlng![1], country.latlng![0]], zoom: 35 });
-          setIsTiny(true);
-        }, 0);
-      } else {
-        setTimeout(() => {
-          setPosition({ center: [0, 0], zoom: 1 });
-          setIsTiny(false);
-        }, 0);
+        return { center: [country.latlng[1], country.latlng[0]] as [number, number], zoom: 35, isTiny: true };
       }
-      return;
+      return { center: [0, 0] as [number, number], zoom: 1, isTiny: false };
     }
-
-    const centroid = geoCentroid(targetFeature);
+    const centroid = geoCentroid(targetFeature) as [number, number];
     const bounds = geoBounds(targetFeature);
     const dx = bounds[1][0] - bounds[0][0];
     const dy = bounds[1][1] - bounds[0][1];
     const maxDim = Math.max(dx, dy);
-    const isActuallyTiny = maxDim < 0.8;
+    const zoom = maxDim > 0 ? Math.max(1.5, Math.min(40, 50 / maxDim)) : 1;
+    return { center: centroid, zoom, isTiny: maxDim < 0.8 };
+  }, [targetFeature, country.latlng]);
 
-    let calculatedZoom = 1;
-    if (maxDim > 0) {
-      calculatedZoom = Math.max(1.5, Math.min(40, 50 / maxDim));
+  const position = {
+    center: override?.code === country.code ? override.center : fitted.center,
+    zoom: override?.code === country.code ? override.zoom : fitted.zoom,
+  };
+  const isTiny = fitted.isTiny;
+  const setPosition = (pos: { center: [number, number]; zoom: number }) => {
+    setOverride({ code: country.code, center: pos.center, zoom: pos.zoom });
+  };
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Enter" && isAnswered) {
+        onNext();
+        return;
+      }
+      if (isAnswered) return;
+      const n = Number(e.key);
+      if (n >= 1 && n <= 4) {
+        const opt = countryOptions[n - 1];
+        if (opt) onSelectCountry(opt.code);
+      }
     }
-
-    setTimeout(() => {
-      setPosition({ center: centroid as [number, number], zoom: calculatedZoom });
-      setIsTiny(isActuallyTiny);
-    }, 0);
-  }, [targetFeature, country.latlng, country.code]);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isAnswered, countryOptions, onSelectCountry, onNext]);
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen max-h-screen pt-4 pb-6 px-6 bg-slate-950 text-slate-100 selection:bg-blue-500/30 overflow-hidden">
-      <div className="w-full max-w-6xl space-y-2">
-        {/* Header - Permanently compact, elevated z-index */}
-        <div className="relative z-20 flex items-center justify-between px-4 mb-4">
-          <div className="flex flex-col gap-1">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 leading-none">{tier} Mode</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Streak</span>
-              <span className="text-lg font-black text-white leading-none tabular-nums tracking-tighter">{streak}</span>
-            </div>
-          </div>
-          
-          <button 
-            onClick={onHome}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group active:scale-95 shadow-xl"
-          >
-            <span className="text-base group-hover:scale-110 transition-transform">🏠</span>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white">Exit</span>
-          </button>
-        </div>
+    <main
+      id="main"
+      className="flex flex-col items-center min-h-screen px-4 sm:px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] bg-slate-950 text-slate-100"
+    >
+      <div className="w-full max-w-6xl space-y-4">
+        <Hud
+          tier={tier}
+          score={score}
+          streak={streak}
+          lives={lives}
+          bestScore={bestScore}
+          lastDelta={lastDelta}
+          muted={muted}
+          onHome={onHome}
+          onToggleMute={onToggleMute}
+        />
 
-        {/* Dynamic Map Layout - Permanently shrunk for better side-by-side visibility */}
-        <div className={`relative z-10 w-full flex flex-col lg:flex-row gap-6 transition-all duration-1000 ease-in-out`}>
-          {/* Main Focus Area */}
-          <div className="flex-[3] relative">
-            <MainMap 
+        <div className="w-full flex flex-col lg:flex-row gap-4">
+          <div className="flex-[3] relative min-h-[42vh] lg:min-h-0">
+            {!mapReady && !mapError && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[2rem] bg-slate-900 border border-white/10">
+                <p className="text-slate-400 text-sm">Loading map…</p>
+              </div>
+            )}
+            {mapError && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[2rem] bg-slate-900 border border-white/10 p-6 text-center">
+                <p className="text-slate-300 text-sm">Map didn’t load. Check your connection, then try again.</p>
+              </div>
+            )}
+            <MainMap
               targetCode={country.code}
               isAnswered={isAnswered}
               fallbackLatLng={country.latlng}
@@ -139,79 +171,59 @@ export default function MapScreen({
             />
           </div>
 
-          {/* Context Area */}
-          <div className="flex-1 lg:min-w-[300px] flex flex-col gap-4">
-            <MiniMap 
-              position={position}
-              geographies={geographies}
-              isTiny={isTiny}
-            />
-            
-            {isAnswered && (
-              <div className="bg-white/[0.03] backdrop-blur-2xl rounded-[2rem] p-6 border border-white/10 animate-in fade-in slide-in-from-right-8 duration-700 shadow-2xl ring-1 ring-white/5 flex-grow">
-                <h3 className={`text-[9px] font-black uppercase tracking-[0.3em] mb-2 ${answerState === "both-correct" ? "text-emerald-400" : "text-rose-400"}`}>
-                  {answerState === "both-correct" ? "Excellent discovery!" : "Not quite right"}
-                </h3>
-                <p className="text-white font-black text-2xl mb-1 tracking-tight truncate">{country.name}</p>
-                <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold bg-white/5 w-fit px-2.5 py-1 rounded-lg border border-white/5">
-                  <span className="uppercase tracking-widest text-[8px] opacity-50">Capital</span>
-                  <span className="text-white">{country.capital}</span>
-                </div>
-                
-                <button
-                  onClick={onNext}
-                  className="w-full mt-6 py-3.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all active:scale-95 shadow-2xl flex items-center justify-center gap-2 group"
-                >
-                  Continue
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </button>
-              </div>
-            )}
+          <div className="hidden lg:flex flex-1 min-w-[280px] flex-col gap-4">
+            <MiniMap position={position} geographies={geographies} isTiny={isTiny} />
           </div>
         </div>
 
-        {/* Options Selection - Always visible, optimized for 4 items */}
-        <div className="flex flex-col items-center gap-4 pt-4 transition-all duration-500">
-          <div className="flex flex-col items-center gap-1">
-            <h2 className="text-white font-black uppercase tracking-[0.4em] text-[10px] opacity-60">
-              Identify the highlight
+        {isAnswered ? (
+          <div
+            className={`rounded-3xl p-5 border border-white/10 bg-white/[0.03] max-w-xl mx-auto w-full ${
+              answerState === "wrong" ? "animate-shake motion-reduce:animate-none" : ""
+            }`}
+          >
+            <h2
+              className={`text-[11px] font-semibold uppercase tracking-wider mb-1 ${
+                answerState === "correct" ? "text-emerald-400" : "text-rose-400"
+              }`}
+              aria-live="polite"
+            >
+              {answerState === "correct" ? "Correct" : "Wrong"}
             </h2>
+            <p className="text-white font-bold text-2xl tracking-tight text-pretty">{country.name}</p>
+            <p className="text-slate-400 text-sm mt-1">Capital {country.capital}</p>
+            <button
+              type="button"
+              onClick={onNext}
+              className="w-full mt-5 min-h-12 py-3 bg-blue-600 text-white text-sm font-bold rounded-2xl hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 transition-colors"
+            >
+              {lives <= 0 ? "See results" : "Next"}
+            </button>
           </div>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-4xl transition-all duration-700 ${isAnswered ? "opacity-40 scale-[0.98] blur-[2px]" : ""}`}>
-            {countryOptions.map((opt) => {
-              const isSelected = selectedCountry === opt.code;
-              const isCorrectTarget = opt.code === country.code;
-              
-              let btnClass = "w-full py-3.5 px-8 rounded-2xl text-[14px] font-black transition-all duration-300 border text-center flex flex-col items-center justify-center gap-1 shadow-md hover:shadow-2xl ";
-              
-              if (!isAnswered) {
-                btnClass += isSelected 
-                  ? "bg-blue-600 border-blue-400 text-white shadow-blue-500/20 scale-[1.03] ring-2 ring-blue-500/50" 
-                  : "bg-white/[0.03] backdrop-blur-md border-white/10 text-slate-400 hover:border-white/20 hover:text-white hover:bg-white/[0.06] active:scale-[0.98]";
-              } else {
-                if (isCorrectTarget) {
-                  btnClass += "bg-emerald-500/90 border-emerald-400 text-white shadow-emerald-500/20 scale-105 z-10 ring-4 ring-emerald-500/20";
-                } else if (isSelected) {
-                  btnClass += "bg-rose-500/90 border-rose-400 text-white shadow-rose-500/20 scale-[0.98] ring-4 ring-rose-500/20";
-                } else {
-                  btnClass += "bg-white/[0.01] border-white/5 text-slate-600 opacity-40";
-                }
-              }
-
-              return (
+        ) : (
+          <div className="flex flex-col items-center gap-3">
+            <h2 className="text-white font-semibold text-sm">Which country is highlighted?</h2>
+            <p className="hidden sm:block text-[11px] text-slate-500">Keys 1–4 to answer</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-3xl">
+              {countryOptions.map((opt, i) => (
                 <button
                   key={opt.code}
-                  onClick={() => !isAnswered && onSelectCountry(opt.code)}
-                  disabled={isAnswered}
-                  className={btnClass}
+                  type="button"
+                  data-choice={i + 1}
+                  onClick={() => onSelectCountry(opt.code)}
+                  disabled={!mapReady && !mapError}
+                  className={optionClass(opt.code, country.code, selectedCountry, answerState, false)}
                 >
-                  <span className="truncate w-full tracking-wide">{opt.name}</span>
+                  <span className="hidden sm:inline text-[10px] font-medium text-slate-500 tabular-nums">
+                    {i + 1}
+                  </span>
+                  <span className="leading-snug text-pretty">{opt.name}</span>
                 </button>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    </main>
   );
 }

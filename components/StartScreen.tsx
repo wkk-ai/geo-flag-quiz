@@ -7,62 +7,87 @@ export type GameMode = "flag" | "map";
 
 interface Props {
   onStart: (mode: GameMode, difficulty: Difficulty) => void;
+  bestScore: number;
+  bestStreak: number;
 }
 
 const difficulties: { label: string; value: Difficulty; desc: string }[] = [
-  { label: "Easy", value: 1, desc: "Famous countries and major nations" },
-  { label: "Medium", value: 2, desc: "Notable countries, slightly less obvious" },
-  { label: "Hard", value: 3, desc: "Rare nations — islands, micro-states & more" },
+  { label: "Easy", value: 1, desc: "Well-known countries" },
+  { label: "Medium", value: 2, desc: "A bit trickier" },
+  { label: "Hard", value: 3, desc: "Tiny nations and odd flags" },
 ];
 
 const modes: { id: GameMode; label: string; desc: string; icon: string }[] = [
-  { 
-    id: "flag", 
-    label: "Flag Quiz", 
-    desc: "Identify country from its flag", 
-    icon: "🚩" 
+  {
+    id: "flag",
+    label: "Flag Quiz",
+    desc: "Name the country. Capital is bonus points.",
+    icon: "🚩",
   },
-  { 
-    id: "map", 
-    label: "Map Quiz", 
-    desc: "Identify country from its location", 
-    icon: "🗺️" 
+  {
+    id: "map",
+    label: "Map Quiz",
+    desc: "Name the highlighted country.",
+    icon: "🗺️",
   },
 ];
 
-export default function StartScreen({ onStart }: Props) {
+export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
 
   if (!selectedMode) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-950 text-slate-100">
+      <main
+        id="main"
+        className="flex flex-col items-center justify-center min-h-screen px-4 py-10 bg-slate-950 text-slate-100"
+      >
         <div className="w-full max-w-md text-center">
-          <div className="relative mb-8 group">
-            <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full group-hover:bg-blue-500/30 transition-all duration-1000"></div>
-            <div className="text-7xl mb-4 relative drop-shadow-2xl animate-float">🌍</div>
-            <h1 className="text-5xl font-black text-white mb-2 tracking-tighter bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">Geo Quiz</h1>
-            <p className="text-slate-400 text-sm font-medium tracking-[0.2em] uppercase opacity-70">Master the Planet</p>
+          <div className="mb-8">
+            <div className="text-7xl mb-4 drop-shadow-2xl animate-float motion-reduce:animate-none" aria-hidden="true">
+              🌍
+            </div>
+            <h1 className="text-5xl font-black text-white mb-2 tracking-tight text-balance">Geo Quiz</h1>
+            <p className="text-slate-400 text-sm">How many can you name?</p>
           </div>
 
-          <div className="relative px-6 py-8 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 mb-8">
-              Select Expedition Mode
-            </p>
+          {(bestScore > 0 || bestStreak > 0) && (
+            <div className="mb-6 flex justify-center gap-6 text-sm">
+              {bestScore > 0 && (
+                <p>
+                  <span className="block text-[11px] uppercase tracking-wider text-slate-500">Best score</span>
+                  <span className="font-bold tabular-nums text-white">{bestScore.toLocaleString()}</span>
+                </p>
+              )}
+              {bestStreak > 0 && (
+                <p>
+                  <span className="block text-[11px] uppercase tracking-wider text-slate-500">Best streak</span>
+                  <span className="font-bold tabular-nums text-white">{bestStreak}</span>
+                </p>
+              )}
+            </div>
+          )}
 
-            <div className="flex flex-col gap-4">
+          <div className="px-5 py-7 rounded-3xl bg-white/[0.03] border border-white/10">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-blue-400 mb-5">
+              Choose a game
+            </p>
+            <p className="text-xs text-slate-500 mb-5">3 lives. Streaks boost your score.</p>
+
+            <div className="flex flex-col gap-3">
               {modes.map((mode) => (
                 <button
                   key={mode.id}
+                  type="button"
                   onClick={() => setSelectedMode(mode.id)}
-                  className="w-full text-left px-6 py-5 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 hover:scale-[1.02] transition-all group active:scale-95 shadow-lg"
+                  className="w-full text-left px-5 py-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 active:scale-[0.98] transition-[transform,background-color,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                 >
-                  <div className="flex items-center gap-5">
-                    <span className="text-3xl group-hover:scale-110 transition-transform">{mode.icon}</span>
-                    <div>
-                      <span className="block font-black text-white text-lg tracking-tight group-hover:text-blue-400 transition-colors">
-                        {mode.label}
-                      </span>
-                      <span className="block text-xs text-slate-400 font-medium mt-1 leading-relaxed">{mode.desc}</span>
+                  <div className="flex items-center gap-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      {mode.icon}
+                    </span>
+                    <div className="min-w-0">
+                      <span className="block font-bold text-white text-lg tracking-tight">{mode.label}</span>
+                      <span className="block text-xs text-slate-400 mt-1 leading-relaxed">{mode.desc}</span>
                     </div>
                   </div>
                 </button>
@@ -70,46 +95,50 @@ export default function StartScreen({ onStart }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-950 text-slate-100">
+    <main
+      id="main"
+      className="flex flex-col items-center justify-center min-h-screen px-4 py-10 bg-slate-950 text-slate-100"
+    >
       <div className="w-full max-w-md text-center">
-        <div className="relative mb-8 pt-4">
-          <div className="text-7xl mb-4 drop-shadow-2xl">{selectedMode === "flag" ? "🚩" : "🗺️"}</div>
-          <h1 className="text-4xl font-black text-white mb-2 tracking-tight">
-            {selectedMode === "flag" ? "Flag Explorer" : "Map Scout"}
+        <div className="mb-8 pt-2">
+          <div className="text-7xl mb-4" aria-hidden="true">
+            {selectedMode === "flag" ? "🚩" : "🗺️"}
+          </div>
+          <h1 className="text-4xl font-black text-white mb-2 tracking-tight text-balance">
+            {selectedMode === "flag" ? "Flag Quiz" : "Map Quiz"}
           </h1>
-          <p className="text-slate-400 text-xs font-black uppercase tracking-[0.2em]">Tier Selection</p>
+          <p className="text-slate-400 text-sm">Pick a difficulty</p>
         </div>
 
-        <div className="relative px-6 py-8 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
-          <div className="flex flex-col gap-4">
+        <div className="px-5 py-7 rounded-3xl bg-white/[0.03] border border-white/10">
+          <div className="flex flex-col gap-3">
             {difficulties.map((opt) => (
               <button
                 key={opt.value}
+                type="button"
                 onClick={() => onStart(selectedMode, opt.value)}
-                className="w-full text-left px-6 py-5 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 hover:scale-[1.02] transition-all group active:scale-95 shadow-lg"
+                className="w-full text-left px-5 py-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/[0.08] hover:border-blue-500/50 active:scale-[0.98] transition-[transform,background-color,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
-                <span className="block font-black text-white text-lg tracking-tight group-hover:text-blue-400 transition-colors">
-                  {opt.label}
-                </span>
-                <span className="block text-xs text-slate-400 font-medium mt-1 leading-relaxed">{opt.desc}</span>
+                <span className="block font-bold text-white text-lg tracking-tight">{opt.label}</span>
+                <span className="block text-xs text-slate-400 mt-1 leading-relaxed">{opt.desc}</span>
               </button>
             ))}
-            
-            <button 
+
+            <button
+              type="button"
               onClick={() => setSelectedMode(null)}
-              className="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-colors flex items-center justify-center gap-2 group"
+              className="mt-4 min-h-11 text-sm font-semibold text-slate-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-xl"
             >
-              <span className="group-hover:-translate-x-1 transition-transform">←</span>
-              Adjust Approach
+              ← Back
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
