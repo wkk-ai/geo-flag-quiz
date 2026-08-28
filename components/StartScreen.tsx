@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Difficulty } from "@/lib/gameLogic";
+import { OfflineHint } from "@/components/PwaRegistration";
 
 export type GameMode = "flag" | "map";
 
@@ -94,6 +95,7 @@ export default function StartScreen({ onStart, bestScore, bestStreak }: Props) {
               ))}
             </div>
           </div>
+          <OfflineHint />
         </div>
       </main>
     );

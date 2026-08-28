@@ -9,11 +9,11 @@ import countries from "i18n-iso-countries";
 import { feature } from "topojson-client";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { geoCentroid, geoBounds } from "d3-geo";
+import { withBase } from "@/lib/paths";
 
 countries.registerLocale(enLocale);
 
-const BASE_PATH = "/geo-flag-quiz";
-const geoUrl = `${BASE_PATH}/maps/world-50m.json`;
+const geoUrl = withBase("/maps/world-50m.json");
 
 interface Props {
   country: Flag;

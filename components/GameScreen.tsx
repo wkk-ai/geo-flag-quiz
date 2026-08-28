@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Hud from "./Hud";
 import { AnswerState, Flag, FlagStep } from "@/lib/gameLogic";
 import { optionClass } from "@/lib/optionClass";
+import { withBase } from "@/lib/paths";
 
 interface Props {
   flag: Flag;
@@ -198,7 +199,7 @@ function FlagPane({ code, onSkip }: { code: string; onSkip: () => void }) {
 
   return (
     <Image
-      src={`https://flagcdn.com/w640/${code}.png`}
+      src={withBase(`/flags/${code}.svg`)}
       alt="Mystery flag"
       fill
       className="object-contain p-5"
